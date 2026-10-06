@@ -1,0 +1,153 @@
+@switch (state().status) {
+  @case ('loading') {
+    <div class="wrap status"><p role="status">Loading…</p></div>
+  }
+  @case ('missing') {
+    <div class="wrap status">
+      <h1>This journey isn't on sale any more.</h1>
+      <a class="btn btn--primary" routerLink="/">Find a trip by feeling</a>
+    </div>
+  }
+  @case ('error') {
+    <div class="wrap status">
+      <h1>The journey didn't load.</h1>
+      <p class="lede">Check your connection and refresh the page.</p>
+    </div>
+  }
+}
+
+@if (journey(); as j) {
+  <div class="wrap">
+    @if (!confirmation()) {
+      <a class="back text-link" [routerLink]="['/journeys', j.slug]">Back to {{ j.title }}</a>
+    } @else {
+      <div class="back"></div>
+    }
+  </div>
+
+  <div class="reserve wrap">
+    <section class="form-col" aria-labelledby="reserve-title">
+      @if (confirmation(); as c) {
+        <div class="done" role="status">
+          <h1 id="reserve-title">Seat reserved</h1>
+          <p class="lede">
+            Thanks, {{ c.firstName }}. Your reference is <strong>{{ c.reference }}</strong>.
+            An SG Travels travel designer will call within one working day to confirm availability and take a deposit.
+            Nothing is charged until then.
+          </p>
+          <div class="done__actions">
+            <a class="btn btn--primary" [routerLink]="['/journeys', j.slug]">Back to {{ j.title }}</a>
+            <a class="btn btn--quiet" routerLink="/">Find another feeling</a>
+          </div>
+        </div>
+      } @else {
+        <h1 id="reserve-title">Reserve a seat on {{ j.title }}</h1>
+        <p class="lede">No payment now. Tell us who's coming and a travel designer will call within one working day.</p>
+
+        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+          <div class="field">
+            <label for="fullName">Full name</label>
+            <input id="fullName" formControlName="fullName" autocomplete="name"
+                   [attr.aria-invalid]="!!errorFor('fullName')" [attr.aria-describedby]="errorFor('fullName') ? 'fullName-error' : null" />
+            @if (errorFor('fullName'); as e) { <p class="error" id="fullName-error">{{ e }}</p> }
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" type="email" formControlName="email" autocomplete="email"
+                     [attr.aria-invalid]="!!errorFor('email')" [attr.aria-describedby]="errorFor('email') ? 'email-error' : null" />
+              @if (errorFor('email'); as e) { <p class="error" id="email-error">{{ e }}</p> }
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" type="tel" formControlName="phone" autocomplete="tel" inputmode="tel"
+                     [attr.aria-invalid]="!!errorFor('phone')" aria-describedby="phone-hint" />
+              <p class="hint" id="phone-hint">Add the country code if you're outside India.</p>
+              @if (errorFor('phone'); as e) { <p class="error">{{ e }}</p> }
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="travellers">Travellers</label>
+              <input id="travellers" type="number" min="1" max="20" formControlName="travellers"
+                     [attr.aria-invalid]="!!errorFor('travellers')" [attr.aria-describedby]="errorFor('travellers') ? 'travellers-error' : null" />
+              @if (errorFor('travellers'); as e) { <p class="error" id="travellers-error">{{ e }}</p> }
+            </div>
+
+            <div class="field">
+              <label for="departure">Departure</label>
+              <select id="departure" formControlName="departure" [attr.aria-invalid]="!!errorFor('departure')">
+                <option value="">I'm flexible</option>
+                @for (d of j.departures; track d) {
+                  <option [value]="d">{{ d | travelDate }}</option>
+                }
+              </select>
+              @if (errorFor('departure'); as e) { <p class="error">{{ e }}</p> }
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="note">Anything we should know? <span class="optional">Optional</span></label>
+            <textarea id="note" rows="3" formControlName="note"
+                      placeholder="An anniversary, Jain meals, a grandparent who walks slowly…"
+                      [attr.aria-invalid]="!!errorFor('note')"></textarea>
+            @if (errorFor('note'); as e) { <p class="error">{{ e }}</p> }
+          </div>
+
+          @if (submitError(); as e) {
+            <p class="form-error" role="alert">{{ e }}</p>
+          }
+
+          <button type="submit" class="btn btn--primary submit" [disabled]="submitting()">
+            {{ submitting() ? 'Reserving…' : 'Reserve my seat' }}
+          </button>
+        </form>
+      }
+    </section>
+
+    <!-- The boarding pass fills itself in as you type. -->
+    <aside class="ticket-col" aria-label="Your boarding pass">
+      <div class="ticket" [style.--accent]="j.theme.accent" [class.is-confirmed]="!!confirmation()">
+        <div class="ticket__top">
+          <span class="ticket__brand">SG Travels</span>
+          <span class="ticket__route">BOM to {{ j.arrivalAirport }}</span>
+        </div>
+        <dl class="ticket__grid">
+          <div class="wide">
+            <dt>Passenger</dt>
+            <dd>{{ values().fullName.trim() || 'Your name' }}</dd>
+          </div>
+          <div class="wide">
+            <dt>Journey</dt>
+            <dd>{{ j.title }}</dd>
+          </div>
+          <div>
+            <dt>Departs</dt>
+            <dd>{{ values().departure ? (values().departure | travelDate) : 'Flexible' }}</dd>
+          </div>
+          <div>
+            <dt>Travellers</dt>
+            <dd>{{ values().travellers || 1 }}</dd>
+          </div>
+          <div>
+            <dt>Duration</dt>
+            <dd>{{ j | duration }}</dd>
+          </div>
+          <div>
+            <dt>Seat</dt>
+            <dd>Window</dd>
+          </div>
+        </dl>
+        <div class="ticket__foot">
+          <p>From {{ j.startingPrice.amount | inr }} per person</p>
+          @if (confirmation(); as c) {
+            <p class="stamp">{{ c.reference }}</p>
+          }
+        </div>
+      </div>
+    </aside>
+  </div>
+}

@@ -1,0 +1,476 @@
+[
+  {
+    "slug": "japan-koyo-trails",
+    "title": "Japan Koyo Trails",
+    "destination": "Japan",
+    "tagline": "Red maples, quiet temples and a bullet train to Kyoto.",
+    "whyYoullLoveIt": "Timed for peak autumn colour, with a night in a Hakone onsen ryokan and Kyoto's temples lit up after dark.",
+    "summary": "Nine days from Tokyo to Osaka in koyo season, when Japan's maples turn red and gold. You'll see Fuji across Lake Kawaguchiko, soak in a Hakone hot spring, ride the Shinkansen and walk Kyoto's temple gardens at their most beautiful, with an Indian Tour Manager handling every detail.",
+    "days": 9,
+    "nights": 8,
+    "startingPrice": 349900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "NRT",
+    "bestSeason": "Early to late November",
+    "featuredRank": 1,
+    "route": [ "Tokyo", "Fuji", "Hakone", "Kyoto", "Osaka" ],
+    "departures": [ "2026-11-06", "2026-11-13", "2026-11-20" ],
+    "feeling": { "zenWild": 22, "romanticAdventurous": 35, "luxuryRaw": 22 },
+    "theme": {
+      "scene": "fuji",
+      "sky": [ "#2B3467", "#B9658A", "#F3B27A" ],
+      "sun": "#FFE3B3",
+      "layers": [ "#8C6A9C", "#55406F", "#2A2140" ],
+      "accent": "#C2452D",
+      "night": false
+    },
+    "highlights": [
+      { "title": "Peak koyo, twice", "detail": "Departures are timed for red maples in Nikko and Kyoto, when the leaves are at their best." },
+      { "title": "A night in a Hakone ryokan", "detail": "Tatami rooms, a private hot-spring bath and a nine-course kaiseki dinner." },
+      { "title": "Shinkansen to Kyoto", "detail": "Japan's bullet train from Odawara, with your bags sent ahead by road." },
+      { "title": "Fuji through the maples", "detail": "Lake Kawaguchiko's Momiji Corridor, with the mountain filling the sky behind it." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Konnichiwa, Tokyo", "location": "Tokyo", "description": "Land at Narita and meet your Indian Tour Manager. A private coach takes you into the city for an evening walk under the lights of Shinjuku and a welcome dinner.", "overnight": "Tokyo", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Old Tokyo, new Tokyo", "location": "Tokyo", "description": "Senso-ji temple and Nakamise street in Asakusa, then the ginkgo avenue at Jingu Gaien turning gold. Afternoon at teamLab Planets, evening at the Shibuya Crossing.", "overnight": "Tokyo", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "The maples of Nikko", "location": "Nikko", "description": "A day in the mountains for peak colour: the gilded Toshogu shrine, Kegon Falls and the 48 hairpin bends of the Irohazaka road, lined with red maples.", "overnight": "Tokyo", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 4, "title": "Fuji, framed in red", "location": "Mt Fuji", "description": "Coach to the Fuji Five Lakes. Walk the Momiji Corridor at Lake Kawaguchiko, ride up to the Fuji 5th Station (weather permitting) and sleep where Fuji fills the window.", "overnight": "Lake Kawaguchiko", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 5, "title": "Hot springs and a pirate ship", "location": "Hakone", "description": "Cruise Lake Ashi, ride the Hakone Ropeway over the steaming vents of Owakudani and try a black egg. Tonight: a ryokan, a yukata, an onsen and kaiseki.", "overnight": "Hakone", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Bullet train to Kyoto", "location": "Kyoto", "description": "Shinkansen from Odawara to Kyoto. Afternoon among the thousand vermilion gates of Fushimi Inari, then an evening walk through Gion's lantern-lit lanes.", "overnight": "Kyoto", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 7, "title": "Kyoto in colour", "location": "Kyoto", "description": "Arashiyama's bamboo grove and the Tenryu-ji garden, the Golden Pavilion, then a private tea ceremony. After dark, Kiyomizu-dera's autumn illumination.", "overnight": "Kyoto", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 8, "title": "Deer, a giant Buddha and street food", "location": "Nara and Osaka", "description": "Morning in Nara with the bowing deer and the Great Buddha of Todai-ji. On to Osaka Castle, then a street-food walk along Dotonbori.", "overnight": "Osaka", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 9, "title": "Sayonara", "location": "Osaka", "description": "A last browse along Shinsaibashi, then your transfer to Kansai Airport for the flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Tea ceremony in a Kyoto townhouse", "description": "A tea master walks you through matcha, seasonal sweets and the quiet in between.", "feel": "Calm" },
+      { "title": "Onsen and kaiseki night", "description": "Soak, change into a yukata and work through nine small courses in your room.", "feel": "Indulgent" },
+      { "title": "Kiyomizu-dera after dark", "description": "The temple's autumn light-up turns a valley of maples gold beneath the wooden stage.", "feel": "Romantic" },
+      { "title": "Dotonbori street-food walk", "description": "Takoyaki, okonomiyaki and a vegetarian-friendly route your Tour Manager knows well.", "feel": "Lively" },
+      { "title": "teamLab Planets", "description": "Wade barefoot through rooms of light, mirrors and water.", "feel": "Playful" }
+    ],
+    "stays": [
+      { "city": "Tokyo", "hotel": "Keio Plaza Hotel Tokyo or similar", "nights": 3, "category": "4-star superior" },
+      { "city": "Lake Kawaguchiko", "hotel": "Fuji View Hotel or similar", "nights": 1, "category": "Lakeside, Fuji-facing" },
+      { "city": "Hakone", "hotel": "Hotel Okada or similar", "nights": 1, "category": "Ryokan with onsen" },
+      { "city": "Kyoto", "hotel": "Hotel Granvia Kyoto or similar", "nights": 2, "category": "5-star" },
+      { "city": "Osaka", "hotel": "Swissotel Nankai Osaka or similar", "nights": 1, "category": "5-star" }
+    ],
+    "inclusions": [
+      "8 nights in premium hotels, including a Hakone ryokan",
+      "Private air-conditioned coach throughout",
+      "Bullet train from Odawara to Kyoto",
+      "Indian Tour Manager from arrival to departure",
+      "All local experiences listed, with entry tickets",
+      "Japan visa assistance",
+      "8 breakfasts, 3 lunches and 8 dinners, with Indian, Jain and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Travel insurance", "Personal expenses and tips", "Optional activities" ]
+  },
+  {
+    "slug": "lapland-aurora-nights",
+    "title": "Lapland Aurora Nights",
+    "destination": "Finnish Lapland",
+    "tagline": "Glass igloos, husky trails and a sky that moves.",
+    "whyYoullLoveIt": "Three nights of aurora chances, two of them in a glass igloo where you can watch the sky from bed.",
+    "summary": "A week above the Arctic Circle in deep winter. Husky sleds through silent forest, a snowmobile across frozen lakes, and two nights in a glass igloo in Saariselkä. The Northern Lights are never guaranteed, so we give you three nights of chances with guides who know where the clear skies are.",
+    "days": 7,
+    "nights": 6,
+    "startingPrice": 324900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "HEL",
+    "bestSeason": "December to March",
+    "featuredRank": 2,
+    "route": [ "Helsinki", "Rovaniemi", "Saariselkä", "Helsinki" ],
+    "departures": [ "2026-12-11", "2027-01-22", "2027-02-19" ],
+    "feeling": { "zenWild": 35, "romanticAdventurous": 22, "luxuryRaw": 30 },
+    "theme": {
+      "scene": "aurora",
+      "sky": [ "#030B18", "#0B2238", "#163E58" ],
+      "sun": "#E9F2F6",
+      "layers": [ "#294862", "#B9CEDC", "#EAF2F7" ],
+      "accent": "#2BB984",
+      "night": true
+    },
+    "highlights": [
+      { "title": "Two nights in a glass igloo", "detail": "A heated glass roof over your bed, 250 km north of the Arctic Circle." },
+      { "title": "Husky sled through the taiga", "detail": "Your own team of dogs, a musher and an hour of snow-muffled forest." },
+      { "title": "Aurora camp with a guide", "detail": "A campfire, hot berry juice and a guide reading the forecast in real time." },
+      { "title": "Crossing the Arctic Circle", "detail": "Step over the line at Santa Claus Village in Rovaniemi." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Hei, Helsinki", "location": "Helsinki", "description": "Arrive in Helsinki and meet your Tour Manager. Harbour-side walk along the Esplanadi, then dinner in the city.", "overnight": "Helsinki", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Across the Arctic Circle", "location": "Rovaniemi", "description": "Morning flight to Rovaniemi and an afternoon at Santa Claus Village on the Arctic Circle. After dark, your first aurora hunt.", "overnight": "Rovaniemi", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 3, "title": "Huskies and reindeer", "location": "Rovaniemi", "description": "A husky sled ride through snowy forest and a reindeer farm with a Sámi host. Evening aurora camp with a campfire.", "overnight": "Rovaniemi", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 4, "title": "To the glass igloo", "location": "Saariselkä", "description": "Coach north through the fells to Saariselkä and check into your glass igloo. Tonight the sky is your ceiling.", "overnight": "Saariselkä", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 5, "title": "Snowmobiles and silence", "location": "Saariselkä", "description": "Snowmobile safari across frozen lakes and a go at ice fishing. Evening smoke sauna, with a roll in the snow for the brave.", "overnight": "Saariselkä", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Back to the city", "location": "Helsinki", "description": "Fly from Ivalo to Helsinki. Visit the Temppeliaukio rock church, then a farewell dinner.", "overnight": "Helsinki", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 7, "title": "Näkemiin", "location": "Helsinki", "description": "Transfer to Helsinki Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Glass igloo night", "description": "Fall asleep watching for green light through a heated glass dome.", "feel": "Romantic" },
+      { "title": "Husky safari", "description": "Ride behind a team of eager huskies on a forest trail.", "feel": "Thrilling" },
+      { "title": "Aurora camp", "description": "Wait for the lights around a fire with a guide and a thermos.", "feel": "Calm" },
+      { "title": "Finnish smoke sauna", "description": "The original sauna, followed by a dare involving snow.", "feel": "Bracing" }
+    ],
+    "stays": [
+      { "city": "Helsinki", "hotel": "Hotel Kämp or similar", "nights": 1, "category": "5-star" },
+      { "city": "Rovaniemi", "hotel": "Arctic Light Hotel or similar", "nights": 2, "category": "Boutique 4-star" },
+      { "city": "Saariselkä", "hotel": "Kakslauttanen Arctic Resort or similar", "nights": 2, "category": "Glass igloo" },
+      { "city": "Helsinki", "hotel": "Hotel Kämp or similar", "nights": 1, "category": "5-star" }
+    ],
+    "inclusions": [
+      "6 nights in premium hotels, including 2 nights in a glass igloo",
+      "Domestic flights Helsinki–Rovaniemi and Ivalo–Helsinki",
+      "Private coach and thermal winter clothing for all activities",
+      "Indian Tour Manager from arrival to departure",
+      "Husky, reindeer, snowmobile and aurora camp experiences",
+      "Schengen visa assistance",
+      "6 breakfasts, 2 lunches and 6 dinners, with Indian and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Travel insurance", "Personal expenses and tips", "Optional activities" ]
+  },
+  {
+    "slug": "switzerland-alpine-classic",
+    "title": "Switzerland Alpine Classic",
+    "destination": "Switzerland",
+    "tagline": "Lake cruises, mountain trains and the Matterhorn at breakfast.",
+    "whyYoullLoveIt": "The Switzerland you know from films, done slowly: panoramic trains, lakeside five-stars and one very famous mountain.",
+    "summary": "Eight unhurried days from Lucerne to Geneva. Ride a rotating cable car up Titlis, stand on the Jungfraujoch, wake up facing the Matterhorn in car-free Zermatt and end with fondue by Lake Geneva.",
+    "days": 8,
+    "nights": 7,
+    "startingPrice": 289900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "ZRH",
+    "bestSeason": "May to September, or December for snow",
+    "featuredRank": 3,
+    "route": [ "Zurich", "Lucerne", "Interlaken", "Zermatt", "Geneva" ],
+    "departures": [ "2026-12-18", "2027-04-30", "2027-05-21" ],
+    "feeling": { "zenWild": 22, "romanticAdventurous": 28, "luxuryRaw": 12 },
+    "theme": {
+      "scene": "alps",
+      "sky": [ "#6FA6D6", "#BFDDF1", "#EEF5F9" ],
+      "sun": "#FFFFFF",
+      "layers": [ "#A9BCD0", "#6A849C", "#2E4558" ],
+      "accent": "#3567A8",
+      "night": false
+    },
+    "highlights": [
+      { "title": "Jungfraujoch, Top of Europe", "detail": "Cogwheel train to 3,454 m, the Ice Palace and the Sphinx terrace." },
+      { "title": "Two nights in Zermatt", "detail": "A car-free village where the Matterhorn turns pink at sunset." },
+      { "title": "Mount Titlis", "detail": "The rotating Rotair cable car, a glacier cave and the Cliff Walk." },
+      { "title": "Lakes all the way", "detail": "Lucerne, Thun, Brienz and Geneva, by boat and panoramic train." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Grüezi, Switzerland", "location": "Lucerne", "description": "Arrive in Zurich and stop at the Rhine Falls on the way to Lucerne. Evening stroll across the Chapel Bridge.", "overnight": "Lucerne", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Mount Titlis", "location": "Engelberg", "description": "The rotating Rotair cable car to the glacier, a walk through the ice cave and the Titlis Cliff Walk if you dare.", "overnight": "Lucerne", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "Lake cruise, panoramic train", "location": "Interlaken", "description": "Cruise Lake Lucerne, then the Luzern–Interlaken Express over the Brünig Pass between two lakes.", "overnight": "Interlaken", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 4, "title": "Top of Europe", "location": "Jungfraujoch", "description": "Cogwheel train up to the Jungfraujoch for the Ice Palace and the Sphinx terrace, then the waterfalls of the Lauterbrunnen valley.", "overnight": "Interlaken", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 5, "title": "The car-free village", "location": "Zermatt", "description": "Coach to Täsch and the shuttle train into Zermatt. Evening stroll as the Matterhorn catches the last light.", "overnight": "Zermatt", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 6, "title": "Gornergrat", "location": "Zermatt", "description": "The Gornergrat railway to a ridge facing 29 peaks over 4,000 m. Afternoon free, fondue for dinner.", "overnight": "Zermatt", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 7, "title": "Montreux to Geneva", "location": "Geneva", "description": "Along Lake Geneva via Montreux and Chillon Castle. The Jet d'Eau, the old town, then a farewell dinner.", "overnight": "Geneva", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 8, "title": "Au revoir", "location": "Geneva", "description": "Transfer to Geneva Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Breakfast with the Matterhorn", "description": "A Zermatt hotel room that faces the mountain.", "feel": "Romantic" },
+      { "title": "Titlis Cliff Walk", "description": "Europe's highest suspension bridge, 3,000 m up.", "feel": "Thrilling" },
+      { "title": "Lake Lucerne cruise", "description": "A paddle-steamer morning past villages and peaks.", "feel": "Calm" },
+      { "title": "Fondue night in Zermatt", "description": "Cheese, bread, wine and a long evening.", "feel": "Indulgent" }
+    ],
+    "stays": [
+      { "city": "Lucerne", "hotel": "Hotel Schweizerhof Luzern or similar", "nights": 2, "category": "5-star, lakeside" },
+      { "city": "Interlaken", "hotel": "Victoria-Jungfrau Grand Hotel or similar", "nights": 2, "category": "5-star" },
+      { "city": "Zermatt", "hotel": "Hotel Monte Rosa or similar", "nights": 2, "category": "Matterhorn-view 4-star" },
+      { "city": "Geneva", "hotel": "Hotel Bristol Geneva or similar", "nights": 1, "category": "4-star superior" }
+    ],
+    "inclusions": [
+      "7 nights in premium lakeside and mountain hotels",
+      "Private coach throughout, plus panoramic trains and lake cruise",
+      "Titlis, Jungfraujoch and Gornergrat excursions",
+      "Indian Tour Manager from arrival to departure",
+      "Schengen visa assistance",
+      "7 breakfasts, 3 lunches and 7 dinners, with Indian and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Travel insurance", "Personal expenses and tips", "Optional activities" ]
+  },
+  {
+    "slug": "kenya-big-five-safari",
+    "title": "Kenya Big Five Safari",
+    "destination": "Kenya",
+    "tagline": "Elephants under Kilimanjaro, lions in the Mara.",
+    "whyYoullLoveIt": "Dawn and dusk game drives in a pop-up-roof 4x4, then evenings by the fire at safari lodges and tented camps.",
+    "summary": "Eight days in Kenya's great parks. Watch elephant herds cross Amboseli under Kilimanjaro, glide past hippos on Lake Naivasha and spend two full days in the Masai Mara, with an optional balloon flight at sunrise.",
+    "days": 8,
+    "nights": 7,
+    "startingPrice": 274900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "NBO",
+    "bestSeason": "January to February, and July to October for the Great Migration",
+    "featuredRank": 4,
+    "route": [ "Nairobi", "Amboseli", "Lake Naivasha", "Masai Mara", "Nairobi" ],
+    "departures": [ "2027-01-15", "2027-02-12", "2027-07-23" ],
+    "feeling": { "zenWild": 75, "romanticAdventurous": 80, "luxuryRaw": 55 },
+    "theme": {
+      "scene": "savanna",
+      "sky": [ "#E9873E", "#F4B860", "#F7DFA2" ],
+      "sun": "#FFF0C9",
+      "layers": [ "#C68A5B", "#8A5634", "#3A2316" ],
+      "accent": "#D9661F",
+      "night": false
+    },
+    "highlights": [
+      { "title": "Kilimanjaro over Amboseli", "detail": "Africa's highest mountain behind elephant herds, on clear mornings." },
+      { "title": "Two full days in the Mara", "detail": "Big cats, wildebeest plains and a bush sundowner." },
+      { "title": "Walking with zebras", "detail": "A guided walk on Crescent Island, where there are no predators." },
+      { "title": "Sunrise balloon (optional)", "detail": "Float over the Mara at first light, then champagne breakfast in the bush." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Karibu, Kenya", "location": "Nairobi", "description": "Arrive in Nairobi and meet your Tour Manager. Afternoon at the Giraffe Centre, then a welcome dinner.", "overnight": "Nairobi", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Under Kilimanjaro", "location": "Amboseli", "description": "Drive south to Amboseli. Afternoon game drive among elephant herds with Kilimanjaro on the horizon.", "overnight": "Amboseli", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "Dawn drive", "location": "Amboseli", "description": "Game drives at dawn and dusk, and a visit to a Maasai village in between.", "overnight": "Amboseli", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 4, "title": "Hippos by boat", "location": "Lake Naivasha", "description": "Drive to the Rift Valley. Boat ride among hippos, then a walking safari on Crescent Island with zebras and giraffes.", "overnight": "Lake Naivasha", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 5, "title": "Into the Mara", "location": "Masai Mara", "description": "Drive to the Masai Mara and head straight out on an afternoon game drive.", "overnight": "Masai Mara", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Big cats, big skies", "location": "Masai Mara", "description": "Optional sunrise balloon. Full-day game drive with a picnic lunch, ending with a sundowner on the plains.", "overnight": "Masai Mara", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 7, "title": "Last light in the Mara", "location": "Nairobi", "description": "A final morning game drive, then fly back to Nairobi for a farewell dinner.", "overnight": "Nairobi", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 8, "title": "Kwaheri", "location": "Nairobi", "description": "Transfer to Jomo Kenyatta Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Mara game drives", "description": "A pop-up-roof 4x4, a sharp-eyed guide and the whole plain to search.", "feel": "Thrilling" },
+      { "title": "Bush sundowner", "description": "Drinks on the plains as the sun drops behind the acacias.", "feel": "Romantic" },
+      { "title": "Maasai village visit", "description": "Meet a Maasai family and see how a manyatta works.", "feel": "Curious" },
+      { "title": "Hot-air balloon at sunrise", "description": "An optional flight over the Mara with breakfast after landing.", "feel": "Unforgettable" }
+    ],
+    "stays": [
+      { "city": "Nairobi", "hotel": "Sarova Stanley or similar", "nights": 1, "category": "Heritage 5-star" },
+      { "city": "Amboseli", "hotel": "Ol Tukai Lodge or similar", "nights": 2, "category": "Safari lodge" },
+      { "city": "Lake Naivasha", "hotel": "Enashipai Resort or similar", "nights": 1, "category": "Lakeside resort" },
+      { "city": "Masai Mara", "hotel": "Ashnil Mara Camp or similar", "nights": 2, "category": "Luxury tented camp" },
+      { "city": "Nairobi", "hotel": "Sarova Stanley or similar", "nights": 1, "category": "Heritage 5-star" }
+    ],
+    "inclusions": [
+      "7 nights in lodges, tented camps and heritage hotels",
+      "Pop-up-roof 4x4 safari vehicles with a window seat for everyone",
+      "Flight from the Masai Mara to Nairobi",
+      "Indian Tour Manager from arrival to departure",
+      "All park fees and game drives listed",
+      "Kenya eTA assistance",
+      "7 breakfasts, 6 lunches and 7 dinners, with Indian and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Hot-air balloon flight", "Travel insurance and vaccinations", "Personal expenses and tips" ]
+  },
+  {
+    "slug": "new-zealand-edge-of-the-world",
+    "title": "New Zealand: Edge of the World",
+    "destination": "New Zealand",
+    "tagline": "Fjords, glacier lakes, geysers and a jet boat.",
+    "whyYoullLoveIt": "Jet boats, glacier lakes and a cruise through Milford Sound, with a free day in Queenstown to jump off something.",
+    "summary": "Twelve days from the geysers of Rotorua to the fjords of the far south. Walk to a glacier lake under Aoraki, ride a jet boat through Shotover canyon, cruise Milford Sound and keep a full day free in Queenstown for whatever scares you most.",
+    "days": 12,
+    "nights": 11,
+    "startingPrice": 419900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "AKL",
+    "bestSeason": "December to March",
+    "featuredRank": 5,
+    "route": [ "Auckland", "Rotorua", "Lake Tekapo", "Mt Cook", "Queenstown", "Milford Sound" ],
+    "departures": [ "2026-12-04", "2027-01-29", "2027-03-05" ],
+    "feeling": { "zenWild": 88, "romanticAdventurous": 90, "luxuryRaw": 70 },
+    "theme": {
+      "scene": "fjord",
+      "sky": [ "#4E83A8", "#9EC3D6", "#DCEAEE" ],
+      "sun": "#FFFFFF",
+      "layers": [ "#6E8C8F", "#33575A", "#132D2C" ],
+      "accent": "#18866B",
+      "night": false
+    },
+    "highlights": [
+      { "title": "Milford Sound cruise", "detail": "Waterfalls, sheer cliffs and Mitre Peak rising straight from the sea." },
+      { "title": "Shotover Jet", "detail": "Spins and near-misses through a narrow river canyon." },
+      { "title": "Hooker Valley track", "detail": "Swing bridges to a lake with icebergs, under Aoraki/Mt Cook." },
+      { "title": "A free day in Queenstown", "detail": "Skydive, paraglide or bungy. Or don't." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Kia ora", "location": "Auckland", "description": "Arrive in Auckland and meet your Tour Manager. Up the Sky Tower before dinner.", "overnight": "Auckland", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Hobbiton and geysers", "location": "Rotorua", "description": "Stop at the Hobbiton Movie Set on the way to Rotorua. Te Puia's geysers, then a Māori hāngī dinner and performance.", "overnight": "Rotorua", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "Luge and redwoods", "location": "Rotorua", "description": "Skyline gondola and luge, the Redwoods treewalk, then a soak at the Polynesian Spa.", "overnight": "Rotorua", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 4, "title": "Under the darkest sky", "location": "Lake Tekapo", "description": "Fly to Christchurch and drive to Lake Tekapo. The Church of the Good Shepherd, then stargazing in a Dark Sky Reserve.", "overnight": "Lake Tekapo", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 5, "title": "Hooker Valley", "location": "Aoraki/Mt Cook", "description": "Walk the Hooker Valley track over swing bridges to a glacier lake with floating icebergs.", "overnight": "Mt Cook Village", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Into the adventure capital", "location": "Queenstown", "description": "Over the Lindis Pass to Queenstown, stopping at Kawarau Bridge, home of the bungy, and gold-rush Arrowtown.", "overnight": "Queenstown", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 7, "title": "Gondola and jet boat", "location": "Queenstown", "description": "Skyline gondola above Lake Wakatipu, then the Shotover Jet through the canyon.", "overnight": "Queenstown", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 8, "title": "Milford Sound", "location": "Fiordland", "description": "A day through Fiordland National Park to cruise Milford Sound past waterfalls and Mitre Peak.", "overnight": "Queenstown", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 9, "title": "Your free day", "location": "Queenstown", "description": "Skydive, paraglide, drive to Glenorchy, or sit by the lake. Your Tour Manager can book any of it.", "overnight": "Queenstown", "meals": [ "Breakfast" ] },
+      { "day": 10, "title": "Wanaka", "location": "Wanaka", "description": "A day trip to Lake Wanaka, its famous lone tree and Puzzling World.", "overnight": "Queenstown", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 11, "title": "Back north", "location": "Auckland", "description": "Fly to Auckland for a farewell dinner on the waterfront.", "overnight": "Auckland", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 12, "title": "Haere rā", "location": "Auckland", "description": "Transfer to Auckland Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Shotover Jet", "description": "A jet boat ride inches from canyon walls.", "feel": "Thrilling" },
+      { "title": "Milford Sound cruise", "description": "Sail under waterfalls in the fjord Kipling called the eighth wonder of the world.", "feel": "Awestruck" },
+      { "title": "Dark-sky stargazing", "description": "The Milky Way over Lake Tekapo, with an astronomer.", "feel": "Calm" },
+      { "title": "Hāngī dinner", "description": "Food cooked in an earth oven, with a Māori welcome.", "feel": "Curious" }
+    ],
+    "stays": [
+      { "city": "Auckland", "hotel": "SO/ Auckland or similar", "nights": 1, "category": "5-star" },
+      { "city": "Rotorua", "hotel": "Pullman Rotorua or similar", "nights": 2, "category": "4-star superior" },
+      { "city": "Lake Tekapo", "hotel": "Peppers Bluewater Resort or similar", "nights": 1, "category": "Lakeside resort" },
+      { "city": "Mt Cook Village", "hotel": "The Hermitage Hotel or similar", "nights": 1, "category": "Alpine hotel" },
+      { "city": "Queenstown", "hotel": "Sofitel Queenstown or similar", "nights": 5, "category": "5-star" },
+      { "city": "Auckland", "hotel": "SO/ Auckland or similar", "nights": 1, "category": "5-star" }
+    ],
+    "inclusions": [
+      "11 nights in premium hotels and lakeside resorts",
+      "Private coach and two domestic flights",
+      "Milford Sound cruise, Shotover Jet and Skyline gondolas",
+      "Indian Tour Manager from arrival to departure",
+      "New Zealand visa assistance",
+      "11 breakfasts, 3 lunches and 10 dinners, with Indian and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Skydive, bungy and other free-day activities", "Travel insurance", "Personal expenses and tips" ]
+  },
+  {
+    "slug": "china-dragon-trails",
+    "title": "China Dragon Trails",
+    "destination": "China",
+    "tagline": "The Great Wall, the Terracotta Army and the hills from old paintings.",
+    "whyYoullLoveIt": "Four very different Chinas in ten days: imperial Beijing, ancient Xi'an, misty Guilin and neon Shanghai.",
+    "summary": "Walk the Great Wall at Mutianyu, stand before the Terracotta Army, cruise the Li River between karst peaks and finish on the Bund. High-speed trains and short flights keep the pace brisk, and your Tour Manager keeps the menus Indian-friendly.",
+    "days": 10,
+    "nights": 9,
+    "startingPrice": 219900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "PEK",
+    "bestSeason": "April to May, and October to November",
+    "featuredRank": 6,
+    "route": [ "Beijing", "Xi'an", "Guilin", "Yangshuo", "Shanghai" ],
+    "departures": [ "2026-10-23", "2026-11-06", "2027-04-09" ],
+    "feeling": { "zenWild": 62, "romanticAdventurous": 58, "luxuryRaw": 45 },
+    "theme": {
+      "scene": "karst",
+      "sky": [ "#C9D6D0", "#E6E5D6", "#F3EEDF" ],
+      "sun": "#F3C7A1",
+      "layers": [ "#A9BBB1", "#6F8B7E", "#36504A" ],
+      "accent": "#B8862B",
+      "night": false
+    },
+    "highlights": [
+      { "title": "The Great Wall at Mutianyu", "detail": "Up by cable car to a restored, uncrowded stretch of wall." },
+      { "title": "The Terracotta Army", "detail": "Thousands of clay soldiers, each with a different face." },
+      { "title": "Li River cruise", "detail": "Four hours between karst peaks from Guilin to Yangshuo." },
+      { "title": "The Bund by night", "detail": "A river cruise past Shanghai's skyline lit up." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Ni hao, Beijing", "location": "Beijing", "description": "Arrive in Beijing and meet your Tour Manager. Evening at Wangfujing, then dinner.", "overnight": "Beijing", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "On the Great Wall", "location": "Mutianyu", "description": "Cable car up to the Mutianyu section and a walk along the ramparts. Evening acrobatics show.", "overnight": "Beijing", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "The Forbidden City", "location": "Beijing", "description": "Tiananmen Square, the Forbidden City and the Temple of Heaven, then a Peking duck dinner with a vegetarian option.", "overnight": "Beijing", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 4, "title": "Bullet train west", "location": "Xi'an", "description": "High-speed train to Xi'an. Cycle the ancient city wall at sunset.", "overnight": "Xi'an", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 5, "title": "The Terracotta Army", "location": "Xi'an", "description": "The Terracotta Warriors, the Muslim Quarter's food street, then a Tang dynasty dinner show.", "overnight": "Xi'an", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Into the karst", "location": "Guilin", "description": "Fly to Guilin. Reed Flute Cave and Elephant Trunk Hill.", "overnight": "Guilin", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 7, "title": "Li River cruise", "location": "Yangshuo", "description": "Cruise the Li River to Yangshuo past karst peaks and bamboo rafts. West Street, then a light show staged on the river.", "overnight": "Yangshuo", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 8, "title": "To the Bund", "location": "Shanghai", "description": "Fly to Shanghai. Evening cruise on the Huangpu past the Bund's lights.", "overnight": "Shanghai", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 9, "title": "Gardens and towers", "location": "Shanghai", "description": "Yu Garden, Nanjing Road and the Shanghai Tower observation deck, then a farewell dinner.", "overnight": "Shanghai", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 10, "title": "Zaijian", "location": "Shanghai", "description": "Transfer to Pudong Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Cycling the Xi'an city wall", "description": "Fourteen kilometres of 600-year-old wall at sunset.", "feel": "Lively" },
+      { "title": "Li River cruise", "description": "Karst peaks drifting past for four hours.", "feel": "Calm" },
+      { "title": "Beijing acrobatics", "description": "A night of impossible balance.", "feel": "Playful" },
+      { "title": "Huangpu night cruise", "description": "Old Shanghai on one bank, the future on the other.", "feel": "Romantic" }
+    ],
+    "stays": [
+      { "city": "Beijing", "hotel": "Grand Hyatt Beijing or similar", "nights": 3, "category": "5-star" },
+      { "city": "Xi'an", "hotel": "Sofitel Xi'an on Renmin Square or similar", "nights": 2, "category": "5-star" },
+      { "city": "Guilin", "hotel": "Shangri-La Guilin or similar", "nights": 1, "category": "5-star" },
+      { "city": "Yangshuo", "hotel": "Alila Yangshuo or similar", "nights": 1, "category": "Design hotel" },
+      { "city": "Shanghai", "hotel": "The Westin Bund Center or similar", "nights": 2, "category": "5-star" }
+    ],
+    "inclusions": [
+      "9 nights in premium hotels",
+      "Private coach, high-speed train to Xi'an and two domestic flights",
+      "Li River cruise and Huangpu night cruise",
+      "Indian Tour Manager from arrival to departure",
+      "China visa assistance",
+      "9 breakfasts, 5 lunches and 9 dinners, with Indian, Jain and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Travel insurance", "Personal expenses and tips", "Optional activities" ]
+  },
+  {
+    "slug": "balkans-adriatic-old-towns",
+    "title": "Balkans: Adriatic Old Towns",
+    "destination": "Croatia, Bosnia and Montenegro",
+    "tagline": "Walled towns, turquoise lakes and long Adriatic evenings.",
+    "whyYoullLoveIt": "Six old towns in three countries, along a coastline that looks retouched, at a pace that leaves room for gelato.",
+    "summary": "Ten days down the Adriatic, from Zagreb's Upper Town to the Bay of Kotor. Walk Plitvice's boardwalks, hear the Sea Organ at sunset, watch divers leap from Mostar's old bridge and circle Dubrovnik's walls at golden hour.",
+    "days": 10,
+    "nights": 9,
+    "startingPrice": 239900,
+    "currency": "INR",
+    "priceNote": "Per person on twin sharing, with return flights from Mumbai. GST and TCS extra.",
+    "arrivalAirport": "ZAG",
+    "bestSeason": "April to June, and September",
+    "featuredRank": 7,
+    "route": [ "Zagreb", "Plitvice", "Split", "Mostar", "Dubrovnik", "Kotor" ],
+    "departures": [ "2027-04-16", "2027-05-07", "2027-09-10" ],
+    "feeling": { "zenWild": 50, "romanticAdventurous": 45, "luxuryRaw": 55 },
+    "theme": {
+      "scene": "adriatic",
+      "sky": [ "#3A78AB", "#8CC3E6", "#F5D6A5" ],
+      "sun": "#FFD38A",
+      "layers": [ "#86A271", "#58714A", "#2E3E2A" ],
+      "accent": "#13809A",
+      "night": false
+    },
+    "highlights": [
+      { "title": "Dubrovnik's walls at golden hour", "detail": "Two kilometres of ramparts over terracotta roofs and the sea." },
+      { "title": "Plitvice on foot", "detail": "Sixteen turquoise lakes joined by waterfalls and wooden boardwalks." },
+      { "title": "Three countries, one coast", "detail": "Croatia, Bosnia and Montenegro on a single Schengen visa." },
+      { "title": "The Bay of Kotor", "detail": "A boat to Our Lady of the Rocks, a church on its own island." }
+    ],
+    "itinerary": [
+      { "day": 1, "title": "Dobro došli", "location": "Zagreb", "description": "Arrive in Zagreb and meet your Tour Manager. Ride the funicular to the Upper Town for an evening walk.", "overnight": "Zagreb", "meals": [ "Dinner" ] },
+      { "day": 2, "title": "Sixteen lakes", "location": "Plitvice", "description": "Coach to Plitvice Lakes. Walk the wooden paths over waterfalls and take the electric boat across Kozjak.", "overnight": "Plitvice", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 3, "title": "Sea Organ sunset", "location": "Zadar and Split", "description": "Via Zadar, where the waves play the Sea Organ at sunset, then on to Split.", "overnight": "Split", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 4, "title": "A palace you can live in", "location": "Split", "description": "Walking tour of Diocletian's Palace, an afternoon in Trogir and an evening on the Riva.", "overnight": "Split", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 5, "title": "The old bridge", "location": "Mostar", "description": "Into Bosnia via the Kravice waterfalls. Watch divers leap from Stari Most into the Neretva.", "overnight": "Mostar", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 6, "title": "Into the walled city", "location": "Dubrovnik", "description": "Down the coast to Dubrovnik. Walk the city walls as the light turns gold.", "overnight": "Dubrovnik", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 7, "title": "Islands by boat", "location": "Elaphiti Islands", "description": "A boat day around the Elaphiti Islands with a swim stop, then the cable car up Mount Srđ for sunset.", "overnight": "Dubrovnik", "meals": [ "Breakfast", "Lunch", "Dinner" ] },
+      { "day": 8, "title": "The Bay of Kotor", "location": "Kotor", "description": "Into Montenegro. A boat to Our Lady of the Rocks, then Kotor's stone lanes.", "overnight": "Kotor", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 9, "title": "Budva and back", "location": "Budva", "description": "Morning in Budva's old town and on its beach, then back to Dubrovnik for a farewell dinner.", "overnight": "Dubrovnik", "meals": [ "Breakfast", "Dinner" ] },
+      { "day": 10, "title": "Doviđenja", "location": "Dubrovnik", "description": "Transfer to Dubrovnik Airport for your flight home.", "overnight": "Flight home", "meals": [ "Breakfast" ] }
+    ],
+    "experiences": [
+      { "title": "Sea Organ at sunset", "description": "Sit on marble steps while the Adriatic plays music through pipes below.", "feel": "Calm" },
+      { "title": "Island hopping and a swim", "description": "Clear water, small harbours, lunch on deck.", "feel": "Playful" },
+      { "title": "Our Lady of the Rocks", "description": "A boat to a tiny island church in the Bay of Kotor.", "feel": "Romantic" },
+      { "title": "Split food walk", "description": "Peka, fresh figs and the best gelato inside a Roman palace.", "feel": "Lively" }
+    ],
+    "stays": [
+      { "city": "Zagreb", "hotel": "Esplanade Zagreb Hotel or similar", "nights": 1, "category": "5-star" },
+      { "city": "Plitvice", "hotel": "Hotel Jezero or similar", "nights": 1, "category": "Lakeside lodge" },
+      { "city": "Split", "hotel": "Radisson Blu Resort Split or similar", "nights": 2, "category": "4-star, sea view" },
+      { "city": "Mostar", "hotel": "Hotel Mepas or similar", "nights": 1, "category": "5-star" },
+      { "city": "Dubrovnik", "hotel": "Hotel Excelsior Dubrovnik or similar", "nights": 3, "category": "5-star" },
+      { "city": "Kotor", "hotel": "Hotel Cattaro or similar", "nights": 1, "category": "Old-town 4-star" }
+    ],
+    "inclusions": [
+      "9 nights in premium hotels",
+      "Private coach throughout, plus island and bay boat trips",
+      "Indian Tour Manager from arrival to departure",
+      "Entry to Plitvice Lakes, Dubrovnik city walls and Diocletian's Palace",
+      "Schengen visa assistance",
+      "9 breakfasts, 3 lunches and 9 dinners, with Indian and local menus",
+      "Return economy flights from Mumbai"
+    ],
+    "exclusions": [ "GST and TCS as applicable", "Travel insurance", "Personal expenses and tips", "Optional activities" ]
+  }
+]

@@ -1,0 +1,16 @@
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_primary_constructors = true:suggestion
+dotnet_style_readonly_field = true:warning
+# The domain uses plain lists for JSON round-tripping; that's intentional.
+dotnet_diagnostic.CA1002.severity = none
+dotnet_diagnostic.CA1848.severity = none
+dotnet_diagnostic.CA1716.severity = none
+dotnet_diagnostic.CA1515.severity = none
+# Result<T>.Success/Failure factories are the point of the type.
+dotnet_diagnostic.CA1000.severity = none
+dotnet_diagnostic.CA1873.severity = none

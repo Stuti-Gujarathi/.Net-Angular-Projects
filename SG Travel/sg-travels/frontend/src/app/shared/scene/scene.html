@@ -1,0 +1,197 @@
+<svg
+  viewBox="0 0 1200 800"
+  preserveAspectRatio="xMidYMid slice"
+  focusable="false"
+  [attr.role]="label() ? 'img' : null"
+  [attr.aria-label]="label() || null"
+  [attr.aria-hidden]="label() ? null : 'true'"
+  [class.is-animated]="animate()"
+>
+  <defs>
+    <linearGradient [attr.id]="id('sky')" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" [attr.stop-color]="sky()[0]" />
+      <stop offset="0.62" [attr.stop-color]="sky()[1]" />
+      <stop offset="1" [attr.stop-color]="sky()[2]" />
+    </linearGradient>
+    <radialGradient [attr.id]="id('glow')">
+      <stop offset="0" [attr.stop-color]="theme().sun" stop-opacity="0.85" />
+      <stop offset="1" [attr.stop-color]="theme().sun" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient [attr.id]="id('water')" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" [attr.stop-color]="sky()[2]" />
+      <stop offset="1" [attr.stop-color]="layers()[1]" />
+    </linearGradient>
+    <linearGradient [attr.id]="id('mist')" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.7" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient [attr.id]="id('aurora')" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8f6bff" stop-opacity="0" />
+      <stop offset="0.45" [attr.stop-color]="theme().accent" stop-opacity="0.95" />
+      <stop offset="1" [attr.stop-color]="theme().accent" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient [attr.id]="id('sea')" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4c93c2" />
+      <stop offset="1" stop-color="#1e537d" />
+    </linearGradient>
+    <radialGradient [attr.id]="id('igloo')" cx="0.5" cy="0.8" r="0.7">
+      <stop offset="0" stop-color="#ffd9a0" stop-opacity="0.95" />
+      <stop offset="1" stop-color="#ffd9a0" stop-opacity="0.15" />
+    </radialGradient>
+    <filter [attr.id]="id('blur')" x="-10%" y="-40%" width="120%" height="180%">
+      <feGaussianBlur stdDeviation="10" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" [attr.fill]="url('sky')" />
+
+  @if (theme().night) {
+    <g class="stars">
+      @for (s of stars; track $index) {
+        <circle [attr.cx]="s.x" [attr.cy]="s.y" [attr.r]="s.r" fill="#fff" [attr.opacity]="s.o" [class.twinkle]="s.twinkle" />
+      }
+    </g>
+  }
+
+  <circle [attr.cx]="sun().x" [attr.cy]="sun().y" [attr.r]="sun().r * 3.4" [attr.fill]="url('glow')" opacity="0.6" />
+  <circle [attr.cx]="sun().x" [attr.cy]="sun().y" [attr.r]="sun().r" [attr.fill]="theme().sun" />
+
+  @switch (theme().scene) {
+    @case ('fuji') {
+      <path [attr.d]="ridges.fujiFar" [attr.fill]="layers()[0]" opacity="0.85" />
+      <path [attr.d]="art.FUJI" [attr.fill]="layers()[1]" />
+      <path [attr.d]="art.FUJI_SNOW" fill="#f6eef1" opacity="0.95" />
+      <path [attr.d]="ridges.fujiMid" [attr.fill]="layers()[1]" />
+      <rect y="655" width="1200" height="145" [attr.fill]="url('water')" />
+      <g [attr.stroke]="theme().sun" stroke-width="3" stroke-linecap="round" opacity="0.4">
+        <path d="M740 690 H840 M760 712 H820 M730 736 H850 M770 760 H812" />
+      </g>
+      <g [attr.fill]="theme().accent" transform="translate(690 742) scale(1 -0.5)" opacity="0.28">
+        <path [attr.d]="art.TORII" />
+      </g>
+      <g [attr.fill]="theme().accent" transform="translate(690 742)">
+        <path [attr.d]="art.TORII" />
+      </g>
+      <path d="M0 800 L0 640 C90 650 170 690 260 720 C300 735 330 760 340 800 Z" [attr.fill]="layers()[2]" />
+      <path d="M1200 800 L1200 660 C1110 670 1020 700 960 740 C930 760 915 780 910 800 Z" [attr.fill]="layers()[2]" />
+      <g class="leaves">
+        @for (l of leaves; track $index) {
+          <g [attr.transform]="'translate(' + l.x + ' ' + l.y + ') rotate(' + l.rotate + ') scale(' + l.scale + ')'">
+            <path class="leaf" [attr.d]="art.MAPLE_LEAF" [attr.fill]="l.warm ? '#e39a3b' : theme().accent" [style.animation-delay.s]="l.delay" />
+          </g>
+        }
+      </g>
+    }
+
+    @case ('alps') {
+      <path [attr.d]="ridges.alpsFar" [attr.fill]="layers()[0]" />
+      <path [attr.d]="art.MATTERHORN" [attr.fill]="layers()[1]" />
+      <path [attr.d]="art.MATTERHORN_SNOW" fill="#ffffff" opacity="0.92" />
+      <path [attr.d]="ridges.alpsMeadow" fill="#7c9a66" />
+      <path [attr.d]="ridges.alpsNear" fill="#4f6e45" />
+      <path [attr.d]="ridges.alpsPines" [attr.fill]="layers()[2]" />
+      <g transform="translate(700 708)">
+        <path [attr.d]="art.CHALET.wall" fill="#6b4a32" />
+        <path [attr.d]="art.CHALET.roof" fill="#3b2a20" />
+        <path [attr.d]="art.CHALET.snow" fill="#f4f6f8" />
+        <path [attr.d]="art.CHALET.windows" fill="#ffd27a" />
+      </g>
+    }
+
+    @case ('aurora') {
+      <circle [attr.cx]="sun().x + 8" [attr.cy]="sun().y - 6" [attr.r]="sun().r - 2" [attr.fill]="sky()[0]" />
+      <g class="aurora" [attr.filter]="url('blur')">
+        <path class="aurora__a" [attr.d]="art.AURORA_A" [attr.fill]="url('aurora')" opacity="0.9" />
+        <path class="aurora__b" [attr.d]="art.AURORA_B" [attr.fill]="url('aurora')" opacity="0.55" />
+      </g>
+      <path [attr.d]="ridges.auroraFar" [attr.fill]="layers()[0]" />
+      <path [attr.d]="ridges.auroraMid" [attr.fill]="layers()[1]" />
+      <path [attr.d]="ridges.auroraPines" fill="#0c1e30" />
+      <path [attr.d]="ridges.auroraNear" [attr.fill]="layers()[2]" />
+      <g transform="translate(640 728)">
+        <ellipse rx="120" ry="26" fill="#ffd9a0" opacity="0.22" />
+        <path d="M-58 0 A58 52 0 0 1 58 0 Z" [attr.fill]="url('igloo')" stroke="#ffffff" stroke-opacity="0.75" stroke-width="2.5" />
+        <path [attr.d]="art.IGLOO_GRID" fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.5" />
+      </g>
+    }
+
+    @case ('savanna') {
+      <path [attr.d]="art.KILIMANJARO" [attr.fill]="layers()[0]" opacity="0.8" />
+      <path [attr.d]="art.KILIMANJARO_SNOW" fill="#fff7ea" opacity="0.85" />
+      <path [attr.d]="ridges.savannaPlain" [attr.fill]="layers()[1]" />
+      <path [attr.d]="ridges.savannaGrass" [attr.fill]="layers()[2]" />
+      <g [attr.fill]="layers()[2]">
+        <path [attr.d]="art.ACACIA" transform="translate(770 716)" />
+        <path [attr.d]="art.GIRAFFE" transform="translate(470 704) scale(1.15)" />
+      </g>
+      <g fill="none" [attr.stroke]="layers()[2]" stroke-width="2.5" stroke-linecap="round">
+        <path d="M430 300 q7 -7 14 0 q7 -7 14 0 M480 270 q5 -5 10 0 q5 -5 10 0 M520 320 q6 -6 12 0 q6 -6 12 0" />
+      </g>
+    }
+
+    @case ('fjord') {
+      <g fill="#ffffff" opacity="0.55">
+        <ellipse cx="520" cy="210" rx="140" ry="22" />
+        <ellipse cx="700" cy="250" rx="110" ry="16" />
+      </g>
+      <path [attr.d]="ridges.fjordFar" [attr.fill]="layers()[0]" opacity="0.9" />
+      <path [attr.d]="art.MITRE_PEAK" [attr.fill]="layers()[1]" opacity="0.85" />
+      <path [attr.d]="art.FJORD_LEFT" [attr.fill]="layers()[1]" />
+      <path [attr.d]="art.FJORD_RIGHT" [attr.fill]="layers()[1]" />
+      <path d="M905 430 C900 500 896 570 892 650" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.85" />
+      <rect y="650" width="1200" height="150" [attr.fill]="url('water')" />
+      <g transform="translate(0 1300) scale(1 -1)" [attr.fill]="layers()[1]" opacity="0.28">
+        <path [attr.d]="art.MITRE_PEAK" />
+        <path [attr.d]="art.FJORD_LEFT" />
+        <path [attr.d]="art.FJORD_RIGHT" />
+      </g>
+      <g stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.4">
+        <path d="M480 690 H600 M520 720 H700 M450 752 H560 M640 770 H760" />
+      </g>
+      <path d="M0 800 L0 760 C120 740 240 760 330 800 Z M1200 800 L1200 750 C1080 745 960 770 900 800 Z" [attr.fill]="layers()[2]" />
+    }
+
+    @case ('karst') {
+      <path [attr.d]="ridges.karstFar" [attr.fill]="layers()[0]" opacity="0.75" />
+      <rect y="470" width="1200" height="160" [attr.fill]="url('mist')" />
+      <path [attr.d]="ridges.karstMid" [attr.fill]="layers()[1]" />
+      <rect y="580" width="1200" height="120" [attr.fill]="url('mist')" opacity="0.8" />
+      <rect y="650" width="1200" height="150" [attr.fill]="url('water')" />
+      <path d="M140 800 L140 650 C140 540 200 470 260 470 C320 470 372 540 372 650 L372 800 Z M860 800 L860 640 C860 520 920 455 990 455 C1060 455 1110 530 1110 640 L1110 800 Z" [attr.fill]="layers()[2]" />
+      <g [attr.fill]="layers()[2]" transform="translate(600 712)">
+        <path [attr.d]="art.RAFT.hull" />
+        <path [attr.d]="art.RAFT.body" />
+        <circle cx="14" cy="-43" r="6" />
+        <path [attr.d]="art.RAFT.hat" />
+        <path [attr.d]="art.RAFT.pole" fill="none" [attr.stroke]="layers()[2]" stroke-width="3" />
+      </g>
+      <g stroke="#ffffff" stroke-width="2" opacity="0.5" stroke-linecap="round">
+        <path d="M520 728 H570 M640 728 H700 M560 744 H660" />
+      </g>
+    }
+
+    @case ('adriatic') {
+      <path [attr.d]="ridges.adriaticFar" [attr.fill]="layers()[0]" />
+      <rect y="500" width="1200" height="300" [attr.fill]="url('sea')" />
+      <g [attr.stroke]="theme().sun" stroke-width="3" stroke-linecap="round" opacity="0.55">
+        <path d="M800 520 H880 M790 545 H900 M815 572 H865 M780 600 H905" />
+      </g>
+      <path d="M220 800 L220 600 C260 560 330 548 420 546 L760 544 C800 546 830 556 850 576 C880 606 900 646 910 700 L910 800 Z" [attr.fill]="layers()[1]" />
+      @for (h of houses; track $index) {
+        <rect [attr.x]="h.x" [attr.y]="548 - h.h" [attr.width]="h.w" [attr.height]="h.h" [attr.fill]="h.wall" />
+        <path [attr.d]="'M' + (h.x - 2) + ' ' + (548 - h.h) + ' L' + (h.x + h.w / 2) + ' ' + (548 - h.h - h.w * 0.32) + ' L' + (h.x + h.w + 2) + ' ' + (548 - h.h) + ' Z'" [attr.fill]="h.roof" />
+      }
+      <rect x="588" y="430" width="24" height="118" fill="#e2d2ae" />
+      <path d="M584 430 L600 398 L616 430 Z" fill="#8e5a3a" />
+      <path [attr.d]="ridges.wall" fill="#d8c6a0" />
+      <rect x="298" y="488" width="72" height="122" rx="6" fill="#d2bf97" />
+      <path d="M298 488 h10 v-9 h10 v9 h10 v-9 h10 v9 h10 v-9 h10 v9 h12" fill="#d2bf97" />
+      <g [attr.fill]="layers()[2]">
+        <ellipse cx="880" cy="690" rx="15" ry="74" />
+        <ellipse cx="915" cy="705" rx="12" ry="60" />
+        <ellipse cx="948" cy="700" rx="14" ry="68" />
+      </g>
+    }
+  }
+</svg>

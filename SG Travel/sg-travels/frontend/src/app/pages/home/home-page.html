@@ -1,0 +1,81 @@
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="hero__copy">
+    <h1 id="hero-title">Don't pick a place. Pick a feeling.</h1>
+    <p class="lede">
+      Pull up the shade and set three dials. The view outside changes with you, and when it feels right,
+      we'll show you the trip.
+    </p>
+
+    <sgt-feeling-panel class="hero__panel" />
+
+    <div class="hero__summary">
+      <p class="sentence" aria-live="polite">{{ store.sentence() }}</p>
+      <button type="button" class="btn btn--primary" (click)="seeMatches()">Show trips that feel like this</button>
+    </div>
+  </div>
+
+  <div class="hero__window">
+    <sgt-window-seat [views]="views()" [active]="topSlug()" [(open)]="shadeOpen" />
+    @if (shadeOpen()) {
+      <sgt-flight-info [match]="top()" [failed]="live.failed()" />
+    } @else {
+      <p class="window-hint">Drag the shade up, or move a dial and it'll open for you.</p>
+    }
+  </div>
+</section>
+
+<section id="departing" class="departing wrap" aria-labelledby="departing-title">
+  <div class="departing__head">
+    <h2 id="departing-title" class="section-title">Departing soon</h2>
+    <p>Small escorted groups from Mumbai, each with an Indian Tour Manager.</p>
+  </div>
+
+  @if (departing() === undefined) {
+    <p class="board-status">Loading departures…</p>
+  } @else if (departing() === null) {
+    <div class="notice">
+      <p>Departures didn't load. Refresh the page to try again.</p>
+    </div>
+  } @else {
+    <table class="board">
+      <thead>
+        <tr>
+          <th scope="col">Departs</th>
+          <th scope="col">Journey</th>
+          <th scope="col">Duration</th>
+          <th scope="col" class="num">From</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (j of departing(); track j.slug) {
+          <tr [style.--row-accent]="j.theme.accent">
+            <td class="when">{{ j.nextDeparture | travelDate }}</td>
+            <td>
+              <div class="trip">
+                <sgt-porthole [theme]="j.theme" />
+                <div>
+                  <a class="trip__link" [routerLink]="['/journeys', j.slug]">{{ j.title }}</a>
+                  <p class="trip__route">{{ j.route.join(' → ') }}</p>
+                </div>
+              </div>
+            </td>
+            <td class="duration">{{ j | duration }}</td>
+            <td class="num price">{{ j.startingPrice.amount | inr }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
+
+<section class="promise wrap" aria-labelledby="promise-title">
+  <h2 id="promise-title" class="section-title">On every SG Travels journey</h2>
+  <ul>
+    @for (p of promises; track p.title) {
+      <li>
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.detail }}</p>
+      </li>
+    }
+  </ul>
+</section>

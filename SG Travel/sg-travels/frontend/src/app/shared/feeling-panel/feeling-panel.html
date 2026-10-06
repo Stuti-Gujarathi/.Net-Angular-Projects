@@ -1,0 +1,32 @@
+<fieldset class="panel" [class.is-compact]="compact()">
+  <legend class="visually-hidden">How do you want your holiday to feel?</legend>
+
+  @for (axis of axes(); track axis.key) {
+    <div class="dial">
+      <label class="dial__question" [for]="uid + axis.key">{{ axis.question }}</label>
+      <div class="dial__row">
+        <span class="dial__pole" [class.is-leaning]="value(axis.key) < 40" aria-hidden="true">{{ axis.low }}</span>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          step="1"
+          [id]="uid + axis.key"
+          [value]="value(axis.key)"
+          [attr.aria-valuetext]="valueText(axis)"
+          (input)="onInput(axis.key, $event)"
+        />
+        <span class="dial__pole dial__pole--high" [class.is-leaning]="value(axis.key) > 60" aria-hidden="true">{{ axis.high }}</span>
+      </div>
+    </div>
+  }
+
+  @if (showPresets()) {
+    <div class="presets">
+      <span class="presets__label">Or start from</span>
+      @for (preset of presets; track preset.label) {
+        <button type="button" class="preset" (click)="store.setAll(preset.feeling)">{{ preset.label }}</button>
+      }
+    </div>
+  }
+</fieldset>

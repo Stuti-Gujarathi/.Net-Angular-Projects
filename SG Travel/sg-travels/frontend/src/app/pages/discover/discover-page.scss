@@ -1,0 +1,138 @@
+:host {
+  display: block;
+}
+
+.discover {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem) 2rem;
+}
+
+.window-col {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.window-sticky {
+  display: grid;
+  gap: 1rem;
+}
+
+.results {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.results__head {
+  display: grid;
+  gap: 0.8rem;
+}
+
+h1 {
+  font-size: var(--step-5);
+  max-width: 16ch;
+}
+
+.sentence {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.2;
+  color: var(--ink-soft);
+}
+
+/* ---- Collapsible dial panel ---- */
+
+.adjust {
+  border-radius: var(--radius-panel);
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--bezel);
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: '';
+      width: 0.55rem;
+      height: 0.55rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+      transition: transform 200ms ease;
+    }
+  }
+
+  &[open] summary::before {
+    transform: rotate(45deg);
+  }
+
+  sgt-feeling-panel {
+    padding: 0.3rem 1.3rem 1.4rem;
+  }
+}
+
+.count {
+  font-size: 0.95rem;
+  color: var(--ink-faint);
+}
+
+.passes {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: opacity 200ms ease;
+
+  &.is-loading {
+    opacity: 0.6;
+  }
+}
+
+.skeleton {
+  height: 12rem;
+  border-radius: var(--radius-pass);
+  background: linear-gradient(90deg, var(--panel), #fff, var(--panel));
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  box-shadow: 0 0 0 1px var(--bezel);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.start-over {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 900px) {
+  .discover {
+    grid-template-columns: 1fr;
+  }
+
+  .window-col {
+    position: static;
+    justify-self: center;
+    width: min(100%, 300px);
+  }
+
+  h1 {
+    font-size: var(--step-4);
+  }
+}

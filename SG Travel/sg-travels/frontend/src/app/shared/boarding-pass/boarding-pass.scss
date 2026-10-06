@@ -1,0 +1,174 @@
+:host {
+  --accent: var(--mood);
+  --notch: 18px;
+  display: block;
+}
+
+.pass {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15.5rem;
+  border-radius: var(--radius-pass);
+  background: #fbfbf8;
+  box-shadow: 0 0 0 1px var(--bezel), 0 18px 34px -28px rgba(28, 36, 51, 0.5);
+  transition: box-shadow 260ms ease, transform 260ms var(--ease-out);
+
+  /* The airline stripe. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    border-radius: var(--radius-pass) 0 0 var(--radius-pass);
+    background: var(--accent);
+  }
+}
+
+:host(.is-active) .pass {
+  box-shadow: 0 0 0 2px var(--ink), 0 22px 40px -26px rgba(28, 36, 51, 0.55);
+  transform: translateX(-4px);
+}
+
+.main {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.4rem 1.6rem 1.4rem 2rem;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink-faint);
+}
+
+.code {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variation-settings: 'wdth' 80;
+  color: var(--ink-soft);
+}
+
+.plane {
+  color: var(--accent);
+}
+
+.title {
+  font-size: var(--step-3);
+}
+
+.why {
+  max-width: 52ch;
+  color: var(--ink-soft);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 2rem;
+  margin: 0.4rem 0 0;
+
+  dt {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Perforated stub: dashed tear line with notches cut top and bottom. */
+.stub {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 0.5rem;
+  padding: 1.4rem 1.4rem 1.4rem 1.6rem;
+  border-left: 2px dashed var(--bezel-deep);
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--notch) / -2 - 1px);
+    width: var(--notch);
+    height: var(--notch);
+    border-radius: 50%;
+    background: var(--fuselage);
+    box-shadow: inset 0 0 0 1px var(--bezel);
+  }
+
+  &::before {
+    top: calc(var(--notch) / -2);
+  }
+
+  &::after {
+    bottom: calc(var(--notch) / -2);
+  }
+}
+
+.score {
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  line-height: 0.9;
+
+  .pct {
+    font-size: 0.5em;
+    margin-left: 0.05em;
+  }
+}
+
+.reason {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.explore {
+  margin-top: 0.4rem;
+  white-space: nowrap;
+  min-height: 2.75rem;
+  padding-inline: 1rem;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+  .pass {
+    grid-template-columns: 1fr;
+  }
+
+  .main {
+    padding: 1.2rem 1.2rem 1.2rem 1.6rem;
+  }
+
+  .stub {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 1.2rem 1.2rem 1.2rem 1.6rem;
+    border-left: 0;
+    border-top: 2px dashed var(--bezel-deep);
+
+    &::before,
+    &::after {
+      top: calc(var(--notch) / -2 - 1px);
+      bottom: auto;
+    }
+
+    &::before {
+      left: calc(var(--notch) / -2);
+    }
+
+    &::after {
+      left: auto;
+      right: calc(var(--notch) / -2);
+    }
+  }
+
+  .explore {
+    grid-column: 1 / -1;
+  }
+}

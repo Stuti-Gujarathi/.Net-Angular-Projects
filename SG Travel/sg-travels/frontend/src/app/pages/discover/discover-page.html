@@ -1,0 +1,47 @@
+<div class="discover wrap">
+  <aside class="window-col" aria-label="Your window">
+    <div class="window-sticky">
+      <sgt-window-seat [views]="views()" [active]="activeSlug()" [(open)]="shadeOpen" />
+      <sgt-flight-info [match]="activeMatch()" [failed]="live.failed()" />
+    </div>
+  </aside>
+
+  <section class="results" aria-labelledby="results-title">
+    <header class="results__head">
+      <h1 id="results-title">Here's where that feeling lands.</h1>
+      <p class="sentence">{{ store.sentence() }}</p>
+    </header>
+
+    <details class="adjust">
+      <summary>Adjust the feeling</summary>
+      <sgt-feeling-panel [compact]="true" [showPresets]="false" />
+    </details>
+
+    @if (live.failed() && !live.matches().length) {
+      <div class="notice" role="alert">
+        <p>Trips didn't load. Check your connection, then try again.</p>
+        <button type="button" class="btn btn--quiet" (click)="live.retry()">Try again</button>
+      </div>
+    } @else {
+      <p class="count" aria-live="polite">{{ countText() }}</p>
+      <ol class="passes" [class.is-loading]="live.loading()" [attr.aria-busy]="live.loading()">
+        @for (m of live.matches(); track m.journey.slug; let i = $index) {
+          <li
+            (mouseenter)="focused.set(m.journey.slug)"
+            (mouseleave)="focused.set(null)"
+            (focusin)="focused.set(m.journey.slug)"
+            (focusout)="focused.set(null)"
+          >
+            <sgt-boarding-pass [match]="m" [rank]="i + 1" [active]="m.journey.slug === activeSlug()" />
+          </li>
+        } @empty {
+          @for (s of [1, 2, 3]; track s) {
+            <li class="skeleton" aria-hidden="true"></li>
+          }
+        }
+      </ol>
+    }
+
+    <p class="start-over">Want a different view? <a class="text-link" routerLink="/">Start again from the window</a>.</p>
+  </section>
+</div>

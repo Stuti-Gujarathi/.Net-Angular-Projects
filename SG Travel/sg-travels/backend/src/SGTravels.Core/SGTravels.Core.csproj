@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Pure domain + application logic. No framework or package dependencies on purpose. -->
+  <PropertyGroup>
+    <RootNamespace>SGTravels.Core</RootNamespace>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,41 @@
+@let m = match();
+@let j = m.journey;
+<article class="pass" [attr.aria-labelledby]="'pass-' + j.slug">
+  <div class="main">
+    <p class="route" aria-label="Mumbai to {{ j.destination }}">
+      <span class="code">BOM</span>
+      <svg class="plane" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="currentColor" transform="rotate(90 12 12)" />
+      </svg>
+      <span class="code">{{ j.arrivalAirport }}</span>
+    </p>
+
+    <h3 class="title" [id]="'pass-' + j.slug">{{ j.title }}</h3>
+    <p class="why">{{ j.whyYoullLoveIt }}</p>
+
+    <dl class="facts">
+      <div>
+        <dt>Duration</dt>
+        <dd>{{ j | duration }}</dd>
+      </div>
+      <div>
+        <dt>From</dt>
+        <dd>{{ j.startingPrice.amount | inr }}</dd>
+      </div>
+      @if (j.nextDeparture) {
+        <div>
+          <dt>Next departure</dt>
+          <dd>{{ j.nextDeparture | travelDate }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+
+  <div class="stub">
+    <p class="score"><span class="visually-hidden">Feeling match: </span>{{ m.score }}<span class="pct">%</span></p>
+    <p class="reason">{{ m.reason }}</p>
+    <a class="btn btn--primary explore" [routerLink]="['/journeys', j.slug]">
+      Explore this trip<span class="visually-hidden">: {{ j.title }}</span>
+    </a>
+  </div>
+</article>

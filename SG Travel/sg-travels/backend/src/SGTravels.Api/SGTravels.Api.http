@@ -1,0 +1,33 @@
+# Try the API from VS Code (REST Client), Visual Studio or Rider.
+@api = http://localhost:5080
+
+### The three feeling dials
+GET {{api}}/api/feelings
+
+### Featured journeys for "Departing soon"
+GET {{api}}/api/journeys?featured=true
+
+### Zen + romantic + luxury
+GET {{api}}/api/discover?zenWild=15&romanticAdventurous=25&luxuryRaw=10&take=4
+
+### Wild + adventurous + raw
+GET {{api}}/api/discover?zenWild=90&romanticAdventurous=90&luxuryRaw=80
+
+### One journey in full
+GET {{api}}/api/journeys/japan-koyo-trails
+
+### Reserve a seat
+POST {{api}}/api/enquiries
+Content-Type: application/json
+
+{
+  "journeySlug": "japan-koyo-trails",
+  "fullName": "Ananya Rao",
+  "email": "ananya@example.com",
+  "phone": "+91 98200 00000",
+  "travellers": 2,
+  "note": "Celebrating our anniversary"
+}
+
+### Health
+GET {{api}}/health

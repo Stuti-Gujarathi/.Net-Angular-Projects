@@ -1,0 +1,166 @@
+:host {
+  display: block;
+}
+
+.panel {
+  display: grid;
+  gap: 1.35rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.is-compact {
+  gap: 0.9rem;
+
+  .dial__question {
+    font-size: 0.85rem;
+  }
+}
+
+.dial {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.dial__question {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.dial__row {
+  display: grid;
+  grid-template-columns: 6.6rem minmax(0, 1fr) 6.6rem;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.dial__pole {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1;
+  color: var(--ink-faint);
+  transition: color 200ms ease;
+
+  &.is-leaning {
+    color: var(--ink);
+  }
+}
+
+.dial__pole--high {
+  text-align: right;
+}
+
+/* ---- The dial: a recessed groove with a centre detent and an amber grip ---- */
+
+input[type='range'] {
+  --track: 10px;
+  --thumb: 26px;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: var(--thumb);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::-webkit-slider-runnable-track {
+    height: var(--track);
+    border-radius: 999px;
+    background:
+      linear-gradient(var(--bezel-deep), var(--bezel-deep)) center / 2px 100% no-repeat,
+      #dfe1db;
+    box-shadow: inset 0 2px 3px rgba(28, 36, 51, 0.2), 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  &::-moz-range-track {
+    height: var(--track);
+    border-radius: 999px;
+    background:
+      linear-gradient(var(--bezel-deep), var(--bezel-deep)) center / 2px 100% no-repeat,
+      #dfe1db;
+    box-shadow: inset 0 2px 3px rgba(28, 36, 51, 0.2), 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: var(--thumb);
+    height: var(--thumb);
+    margin-top: calc((var(--track) - var(--thumb)) / 2);
+    border-radius: 50%;
+    background: var(--signal);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px rgba(28, 36, 51, 0.25), 0 4px 10px rgba(28, 36, 51, 0.25), 0 0 0 0 var(--mood);
+    transition: box-shadow 200ms ease, transform 120ms ease;
+  }
+
+  &::-moz-range-thumb {
+    width: var(--thumb);
+    height: var(--thumb);
+    border-radius: 50%;
+    background: var(--signal);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 1px rgba(28, 36, 51, 0.25), 0 4px 10px rgba(28, 36, 51, 0.25);
+  }
+
+  &:active::-webkit-slider-thumb {
+    transform: scale(1.08);
+  }
+
+  &:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--ink), 0 4px 10px rgba(28, 36, 51, 0.25);
+  }
+
+  &:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 3px var(--ink), 0 4px 10px rgba(28, 36, 51, 0.25);
+  }
+}
+
+/* ---- Presets ---- */
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.presets__label {
+  font-size: 0.9rem;
+  color: var(--ink-faint);
+  margin-right: 0.25rem;
+}
+
+.preset {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--bezel-deep);
+  border-radius: 999px;
+  background: var(--panel);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+
+  &:hover {
+    border-color: var(--ink);
+    background: #fff;
+  }
+}
+
+@media (max-width: 520px) {
+  .dial__row {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.4rem;
+
+    input {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+}

@@ -1,0 +1,44 @@
+<div class="frame">
+  <div class="pane" #pane [class.is-open]="openness() > 0.2">
+    <div class="views" role="img" [attr.aria-label]="description()">
+      @for (view of views(); track view.slug) {
+        <sgt-scene
+          class="view"
+          [class.is-active]="view.slug === activeView()?.slug"
+          [theme]="view.theme"
+          [animate]="view.slug === activeView()?.slug && openness() > 0.2"
+        />
+      }
+    </div>
+
+    <div class="clouds" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="glare" aria-hidden="true"></div>
+
+    <div
+      class="shade"
+      role="slider"
+      tabindex="0"
+      aria-label="Window shade"
+      aria-orientation="vertical"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-valuenow]="openness() * 100 | number: '1.0-0'"
+      [attr.aria-valuetext]="openness() > 0.5 ? 'Open' : 'Closed'"
+      [class.is-dragging]="drag() !== null"
+      [style.--open]="openness()"
+      (pointerdown)="onPointerDown($event)"
+      (pointermove)="onPointerMove($event)"
+      (pointerup)="onPointerUp()"
+      (pointercancel)="onPointerUp()"
+      (keydown)="onKeydown($event)"
+    >
+      <span class="shade__hint">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 14l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        Pull up the shade
+      </span>
+      <span class="shade__grip" aria-hidden="true"></span>
+    </div>
+  </div>
+</div>

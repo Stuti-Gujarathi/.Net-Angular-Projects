@@ -1,0 +1,18 @@
+# One command for the whole stack:  docker compose up --build
+# Then open http://localhost:8080
+services:
+  api:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      # Trust X-Forwarded-For from nginx so rate limiting sees real client IPs.
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+    restart: unless-stopped
+
+  web:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    restart: unless-stopped
