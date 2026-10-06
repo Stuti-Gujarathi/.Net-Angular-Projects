@@ -1,0 +1,6 @@
+@OrderPulse.API_HostAddress = http://localhost:5228
+
+GET {{OrderPulse.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

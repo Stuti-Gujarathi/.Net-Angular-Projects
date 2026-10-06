@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/OrderPulse.API/OrderPulse.API.csproj" />
+    <Project Path="src/OrderPulse.Application/OrderPulse.Application.csproj" />
+    <Project Path="src/OrderPulse.Domain/OrderPulse.Domain.csproj" />
+    <Project Path="src/OrderPulse.Infrastructure/OrderPulse.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderPulse.UnitTests/OrderPulse.UnitTests.csproj" />
+  </Folder>
+</Solution>
