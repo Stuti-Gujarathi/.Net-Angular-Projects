@@ -1,0 +1,95 @@
+<article class="ticket" [class.open]="expanded()">
+  <div class="main">
+    @if (highlightTags().length) {
+      <div class="ribbons">
+        @for (t of highlightTags(); track t) { <span class="ribbon" [attr.data-tag]="t">{{ t }}</span> }
+      </div>
+    }
+    <div class="grid">
+      <div class="airline">
+        <div class="marks">
+          @for (a of airlines(); track a.code) {
+            <span class="airline-mark" [style.background]="a.color">{{ a.code }}</span>
+          }
+        </div>
+        <div class="names">
+          <b>{{ airlines().length > 1 ? airlines()[0].name + ' + ' + airlines()[1].name : airlines()[0].name }}</b>
+          <small>{{ flightNumbers() }}</small>
+        </div>
+      </div>
+
+      <div class="times">
+        <div class="pt">
+          <b class="tnum">{{ itinerary().departure | hhmm }}</b>
+          <span>{{ first().origin }}</span>
+        </div>
+        <div class="path">
+          <small>{{ itinerary().totalDurationMinutes | duration }}</small>
+          <div class="line" [class.direct]="itinerary().stops === 0">
+            @for (l of itinerary().layovers; track l.airportCode) { <i [title]="l.city"></i> }
+          </div>
+          <small [class.stop]="itinerary().stops > 0">{{ stopsLabel() }}</small>
+        </div>
+        <div class="pt end">
+          <b class="tnum">{{ itinerary().arrival | hhmm }}@if ((itinerary().departure | dayShift: itinerary().arrival) > 0) {<sup>+{{ itinerary().departure | dayShift: itinerary().arrival }}</sup>}</b>
+          <span>{{ last().destination }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="perks">
+      <span><at-icon name="bag" [size]="14" />{{ first().checkInBaggageKg }} kg check-in</span>
+      @if (first().mealIncluded) { <span><at-icon name="meal" [size]="14" />Meal included</span> }
+      <span [class.good]="itinerary().refundable"><at-icon [name]="itinerary().refundable ? 'shield' : 'info'" [size]="14" />{{ itinerary().refundable ? 'Refundable' : 'Partially refundable' }}</span>
+      <button type="button" class="details-btn" (click)="toggle.emit()" [attr.aria-expanded]="expanded()">
+        {{ expanded() ? 'Hide details' : 'Flight details' }}<at-icon name="chevron-down" [size]="14" />
+      </button>
+    </div>
+  </div>
+
+  <div class="stub">
+    <div class="price">
+      <b class="tnum display">{{ itinerary().farePerAdult | inr }}</b>
+      <small>per adult, incl. taxes</small>
+      @if (passengers() > 1) { <small class="total">{{ itinerary().totalFare | inr }} for {{ passengers() }}</small> }
+    </div>
+    @if (itinerary().seatsLeft <= 9) {
+      <span class="seats">Only {{ itinerary().seatsLeft }} {{ itinerary().seatsLeft === 1 ? 'seat' : 'seats' }} left</span>
+    }
+    <button type="button" class="btn btn-primary btn-block" (click)="book.emit(itinerary())">Book now</button>
+  </div>
+
+  @if (expanded()) {
+    <div class="details">
+      @for (s of itinerary().segments; track s.flightId; let i = $index) {
+        <div class="seg">
+          <div class="seg-air">
+            <span class="airline-mark" [style.background]="s.airlineColor">{{ s.airlineCode }}</span>
+            <div><b>{{ s.airlineName }}</b><small>{{ s.flightNumber }}, {{ s.aircraft }}</small></div>
+          </div>
+          <ol class="timeline">
+            <li>
+              <b class="tnum">{{ s.departure | hhmm }}</b>
+              <div><b>{{ s.originCity }} ({{ s.origin }})</b><small>{{ s.originName }}</small></div>
+            </li>
+            <li class="dur"><small>{{ s.durationMinutes | duration }} flight</small></li>
+            <li>
+              <b class="tnum">{{ s.arrival | hhmm }}</b>
+              <div><b>{{ s.destinationCity }} ({{ s.destination }})</b><small>{{ s.destinationName }}</small></div>
+            </li>
+          </ol>
+          <div class="seg-meta">
+            <span><at-icon name="bag" [size]="14" />Cabin {{ s.cabinBaggageKg }} kg, check-in {{ s.checkInBaggageKg }} kg</span>
+            <span><at-icon name="meal" [size]="14" />{{ s.mealIncluded ? 'Complimentary meal' : 'Meals available to buy' }}</span>
+          </div>
+        </div>
+        @if (itinerary().layovers[i]; as l) {
+          <div class="layover" [class.long]="l.minutes > 240">
+            <at-icon name="clock" [size]="15" />
+            <span><b>{{ l.minutes | duration }} layover in {{ l.city }}.</b> Change planes at {{ l.airportCode }}; bags are checked through.</span>
+          </div>
+        }
+      }
+    </div>
+  }
+</article>

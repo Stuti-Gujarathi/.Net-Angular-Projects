@@ -1,0 +1,51 @@
+<form class="search" [class.compact]="compact()" (submit)="$event.preventDefault(); search()" novalidate>
+  <div class="route">
+    <at-airport-picker label="From" [airports]="airports()" [exclude]="to()" [value]="from()" (valueChange)="from.set($event)"
+                       [invalid]="submitted() && (!from() || from() === to())" />
+    <button type="button" class="swap" [class.turned]="swapped()" (click)="swap()" aria-label="Swap origin and destination">
+      <at-icon name="swap" [size]="18" />
+    </button>
+    <at-airport-picker label="To" [airports]="airports()" [exclude]="from()" [value]="to()" (valueChange)="to.set($event)"
+                       [invalid]="submitted() && (!to() || from() === to())" />
+  </div>
+
+  <label class="box date">
+    <span class="lbl">Departure</span>
+    <input type="date" [min]="today" [max]="maxDate" [value]="date()" (change)="date.set($any($event.target).value)" required />
+  </label>
+
+  <div class="box travellers">
+    <button type="button" class="t-trigger" (click)="travellersOpen.set(!travellersOpen())" [attr.aria-expanded]="travellersOpen()">
+      <span class="lbl">Travellers and cabin</span>
+      <span class="t-value">{{ pax() }} {{ pax() === 1 ? 'traveller' : 'travellers' }}</span>
+      <span class="t-cabin">{{ cabinLabels[cabin()] }}</span>
+    </button>
+    @if (travellersOpen()) {
+      <div class="pop">
+        <div class="pop-row">
+          <div><b>Travellers</b><small>Up to 9 per booking</small></div>
+          <div class="stepper">
+            <button type="button" (click)="changePax(-1)" [disabled]="pax() <= 1" aria-label="Fewer travellers"><at-icon name="minus" [size]="16" /></button>
+            <span class="tnum">{{ pax() }}</span>
+            <button type="button" (click)="changePax(1)" [disabled]="pax() >= 9" aria-label="More travellers"><at-icon name="plus" [size]="16" /></button>
+          </div>
+        </div>
+        <div class="pop-cabins">
+          @for (c of cabins; track c) {
+            <button type="button" [class.on]="cabin() === c" (click)="cabin.set(c)">{{ cabinLabels[c] }}</button>
+          }
+        </div>
+        <button type="button" class="btn btn-dark btn-sm btn-block" (click)="travellersOpen.set(false)">Done</button>
+      </div>
+    }
+  </div>
+
+  <button type="submit" class="btn btn-primary go">
+    <at-icon name="search" [size]="20" />
+    <span>Search flights</span>
+  </button>
+
+  @if (submitted() && from() === to()) {
+    <p class="err">Origin and destination need to be different airports.</p>
+  }
+</form>

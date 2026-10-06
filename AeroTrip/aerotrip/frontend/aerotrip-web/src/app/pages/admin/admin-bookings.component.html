@@ -1,0 +1,103 @@
+<header class="page-head">
+  <div><h1>Bookings</h1><p>Search by PNR, traveller, email, airport code or flight number.</p></div>
+</header>
+
+<div class="toolbar">
+  <div class="seg" role="tablist">
+    @for (s of statuses; track s) {
+      <button type="button" role="tab" [class.on]="status() === s" (click)="setStatus(s)">{{ s ? statusLabels[s] : 'All' }}</button>
+    }
+  </div>
+  <label class="search">
+    <at-icon name="search" [size]="16" />
+    <input type="search" placeholder="Search bookings" [value]="search()" (input)="onSearch($any($event.target).value)" aria-label="Search bookings" />
+  </label>
+</div>
+
+<section class="card">
+  <div class="table-wrap" [class.loading]="loading()">
+    <table class="table">
+      <thead>
+        <tr><th>PNR</th><th>Traveller</th><th>Route</th><th>Departure</th><th>Flight</th><th>Cabin</th><th class="num">Pax</th><th class="num">Total</th><th>Status</th><th>Booked</th></tr>
+      </thead>
+      <tbody>
+        @for (b of result()?.items ?? []; track b.id) {
+          <tr class="click" (click)="open(b)">
+            <td><span class="pnr">{{ b.pnr }}</span></td>
+            <td><b>{{ b.userName }}</b><br /><small class="muted">{{ b.userEmail }}</small></td>
+            <td><b>{{ b.origin }} → {{ b.destination }}</b><br /><small class="muted">{{ b.originCity }} to {{ b.destinationCity }}</small></td>
+            <td class="nowrap">{{ b.departure | date: 'd MMM y' }}<br /><small class="muted">{{ b.departure | hhmm }}</small></td>
+            <td class="nowrap"><span class="air"><i [style.background]="b.airlineColor"></i>{{ b.flightNumbers }}</span>@if (b.stops) { <br /><small class="muted">1 stop</small> }</td>
+            <td>{{ cabinLabels[b.cabin] }}</td>
+            <td class="num">{{ b.passengerCount }}</td>
+            <td class="num"><b>{{ b.total | inr }}</b>@if (b.refundAmount) { <br /><small class="refund">−{{ b.refundAmount | inr }}</small> }</td>
+            <td><span class="badge" [class]="'badge badge-' + b.status">{{ statusLabels[b.status] }}</span></td>
+            <td class="nowrap muted">{{ b.createdAt | date: 'd MMM, HH:mm' }}</td>
+          </tr>
+        } @empty {
+          @if (!loading()) { <tr><td colspan="10"><div class="empty"><h3>No bookings found</h3><p>Try a different search or status.</p></div></td></tr> }
+        }
+      </tbody>
+    </table>
+  </div>
+  @if (result(); as r) {
+    <footer class="pager">
+      <span class="muted">{{ r.totalCount === 0 ? 0 : (r.page - 1) * r.pageSize + 1 }}–{{ (r.page - 1) * r.pageSize + r.items.length }} of {{ r.totalCount }}</span>
+      <div class="row">
+        <button type="button" class="btn btn-sm" [disabled]="r.page <= 1" (click)="page.set(r.page - 1)"><at-icon name="chevron-left" [size]="15" />Previous</button>
+        <span class="tnum">Page {{ r.page }} of {{ r.totalPages || 1 }}</span>
+        <button type="button" class="btn btn-sm" [disabled]="r.page >= r.totalPages" (click)="page.set(r.page + 1)">Next<at-icon name="chevron-right" [size]="15" /></button>
+      </div>
+    </footer>
+  }
+</section>
+
+<at-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)" [title]="selected() ? 'Booking ' + selected()!.pnr : 'Booking'" [subtitle]="selected()?.travellerName ?? ''" width="560px">
+  @if (selected(); as b) {
+    <div class="detail">
+      <div class="d-status"><span class="badge" [class]="'badge badge-' + b.status">{{ statusLabels[b.status] }}</span><span class="muted">Booked {{ b.createdAt | date: 'd MMM y, HH:mm' }}</span></div>
+      @for (s of b.segments; track s.flightInstanceId) {
+        <div class="d-seg">
+          <span class="airline-mark" [style.background]="s.airlineColor">{{ s.airlineCode }}</span>
+          <div class="d-route"><b>{{ s.origin }} {{ s.departure | hhmm }}</b><at-icon name="arrow-right" [size]="15" /><b>{{ s.destination }} {{ s.arrival | hhmm }}</b></div>
+          <small class="muted">{{ s.flightNumber }}, {{ s.departure | date: 'EEE d MMM' }}, {{ s.durationMinutes | duration }}</small>
+        </div>
+      }
+      <h3 class="d-h">Travellers</h3>
+      <ul class="d-list">
+        @for (p of b.passengers; track $index; let i = $index) {
+          <li><span>{{ p.firstName }} {{ p.lastName }}</span><small class="muted">{{ p.gender }}, {{ p.age }}</small><b>{{ b.segments[0].seats[i] || '—' }}</b></li>
+        }
+      </ul>
+      <h3 class="d-h">Contact</h3>
+      <p>{{ b.contactEmail }}<br />{{ b.contactPhone }}</p>
+      <h3 class="d-h">Payment</h3>
+      <dl class="d-fare">
+        <div><dt>Base fare</dt><dd>{{ b.fare.baseFare | inr }}</dd></div>
+        <div><dt>Taxes and fees</dt><dd>{{ b.fare.taxes + b.fare.convenienceFee | inr }}</dd></div>
+        <div><dt>Add-ons</dt><dd>{{ b.fare.extrasTotal | inr }}</dd></div>
+        @if (b.fare.discount) { <div><dt>Discount ({{ b.couponCode }})</dt><dd class="good">−{{ b.fare.discount | inr }}</dd></div> }
+        <div class="tot"><dt>Total</dt><dd>{{ b.fare.total | inr }}</dd></div>
+        @if (b.payment) { <div><dt>Paid with</dt><dd>{{ b.payment.maskedInstrument }}</dd></div><div><dt>Reference</dt><dd>{{ b.payment.reference }}</dd></div> }
+        @if (b.refundAmount) { <div><dt>Refunded</dt><dd class="good">{{ b.refundAmount | inr }}</dd></div> }
+      </dl>
+    </div>
+  } @else {
+    <div class="skeleton" style="height: 360px"></div>
+  }
+  <ng-container drawer-actions>
+    @if (selected(); as b) {
+      <a class="btn" [routerLink]="['/trips', b.id]"><at-icon name="ticket" />Open e-ticket</a>
+      @if (b.canCancel) { <button type="button" class="btn btn-danger" (click)="confirmOpen.set(true)">Cancel with full refund</button> }
+    }
+  </ng-container>
+</at-drawer>
+
+<at-modal [open]="confirmOpen()" (closed)="confirmOpen.set(false)">
+  <h2 class="m-title">Cancel booking {{ selected()?.pnr }}?</h2>
+  <p class="muted m-text">Cancellations made by AeroTrip refund the full {{ selected()?.fare?.total | inr }} and release the seats. The traveller will see this on their trip.</p>
+  <div class="m-actions">
+    <button type="button" class="btn" (click)="confirmOpen.set(false)">Keep booking</button>
+    <button type="button" class="btn btn-danger" [disabled]="cancelling()" (click)="cancel()">@if (cancelling()) { <span class="spinner"></span> } Cancel booking</button>
+  </div>
+</at-modal>

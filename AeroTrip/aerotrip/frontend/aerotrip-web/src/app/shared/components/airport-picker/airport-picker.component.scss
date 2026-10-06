@@ -1,0 +1,24 @@
+:host { position: relative; display: block; min-width: 0; }
+.trigger {
+  width: 100%; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: 14px;
+  padding: .7rem 1rem .75rem; cursor: pointer; display: grid; gap: .05rem; transition: border-color .15s, box-shadow .15s;
+  &:hover { border-color: var(--line-2); }
+  &.is-open { border-color: var(--cobalt); box-shadow: 0 0 0 4px var(--cobalt-soft); }
+  &.invalid { border-color: var(--rose); box-shadow: 0 0 0 4px var(--rose-soft); }
+}
+.lbl { font-size: .74rem; font-weight: 600; color: var(--muted); }
+.code { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.05; }
+.code.placeholder { color: var(--line-2); }
+.city { font-size: .85rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.panel {
+  position: absolute; z-index: 30; top: calc(100% + 8px); left: 0; width: max(100%, 340px); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-lg); padding: .6rem; animation: drop .16s ease-out;
+}
+@keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+ul { list-style: none; margin: .5rem 0 0; padding: 0; max-height: 320px; overflow-y: auto; }
+li { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: .6rem; padding: .55rem .6rem; border-radius: 10px; cursor: pointer; }
+li.active { background: var(--paper); }
+.li-code { font-family: var(--font-display); font-weight: 800; font-size: 1rem; color: var(--ink); }
+.li-main { display: grid; min-width: 0; b { font-weight: 600; font-size: .9rem; } small { color: var(--muted); font-size: .76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } }
+.li-intl { font-size: .7rem; font-weight: 600; color: var(--cobalt); background: var(--cobalt-soft); padding: .15rem .45rem; border-radius: 6px; white-space: nowrap; }
+.none { display: block; color: var(--muted); font-size: .88rem; cursor: default; }

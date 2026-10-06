@@ -1,0 +1,192 @@
+/* =========================================================================
+   AeroTrip design system
+   Ink navy + sunrise coral, Bricolage Grotesque for display, Inter for UI.
+   Signature motif: the boarding pass — perforated edges, ticket stubs, big IATA codes.
+   ========================================================================= */
+
+:root {
+  --ink: #0f1b2d;
+  --ink-2: #1b2a45;
+  --ink-3: #2b3d5e;
+  --paper: #f3f5f8;
+  --surface: #ffffff;
+  --line: #e2e6ed;
+  --line-2: #cfd6e1;
+  --muted: #5b687c;
+  --faint: #8a95a7;
+
+  --coral: #ff5b35;
+  --coral-ink: #e0441f;
+  --coral-soft: #fff0eb;
+  --cobalt: #2747d8;
+  --cobalt-soft: #ecf0ff;
+  --mint: #0e9a6a;
+  --mint-soft: #e5f6ee;
+  --amber: #c97c00;
+  --amber-soft: #fff4dc;
+  --rose: #e5484d;
+  --rose-soft: #fdeced;
+  --plum: #7048e8;
+  --plum-soft: #f1ecff;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 2px rgb(15 27 45 / 0.06), 0 1px 1px rgb(15 27 45 / 0.04);
+  --shadow: 0 14px 34px -14px rgb(15 27 45 / 0.2);
+  --shadow-lg: 0 36px 70px -28px rgb(15 27 45 / 0.4);
+
+  --font-display: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+  --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --nav-h: 68px;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); letter-spacing: -0.025em; line-height: 1.08; margin: 0; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--cobalt); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+img, svg { display: block; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid color-mix(in srgb, var(--cobalt) 55%, transparent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--coral) 25%, transparent); }
+
+.container { width: min(1200px, 100% - 2.5rem); margin-inline: auto; }
+.tnum { font-variant-numeric: tabular-nums; }
+.display { font-family: var(--font-display); }
+.muted { color: var(--muted); }
+.faint { color: var(--faint); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+.page { padding: 2rem 0 4rem; min-height: calc(100vh - var(--nav-h) - 160px); }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.page-head h1 { font-size: clamp(1.7rem, 3vw, 2.3rem); }
+.page-head p { color: var(--muted); margin-top: .35rem; }
+.stack { display: grid; gap: 1rem; }
+.row { display: flex; align-items: center; gap: .75rem; }
+.spacer { flex: 1; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --bg: var(--surface); --fg: var(--ink); --bd: var(--line-2);
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  height: 42px; padding: 0 1.1rem; border-radius: 10px; border: 1px solid var(--bd);
+  background: var(--bg); color: var(--fg); font-weight: 600; font-size: .92rem; cursor: pointer; white-space: nowrap;
+  text-decoration: none !important; transition: background .15s, border-color .15s, transform .1s, box-shadow .15s;
+}
+.btn:hover { border-color: var(--ink); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { --bg: var(--coral); --fg: #fff; --bd: var(--coral); box-shadow: 0 8px 20px -10px var(--coral); }
+.btn-primary:hover:not(:disabled) { --bg: var(--coral-ink); --bd: var(--coral-ink); }
+.btn-dark { --bg: var(--ink); --fg: #fff; --bd: var(--ink); }
+.btn-dark:hover:not(:disabled) { --bg: var(--ink-2); }
+.btn-ghost { --bg: transparent; --bd: transparent; }
+.btn-ghost:hover { --bg: var(--paper); --bd: transparent; }
+.btn-danger { --bg: var(--surface); --fg: var(--rose); --bd: color-mix(in srgb, var(--rose) 40%, transparent); }
+.btn-danger:hover:not(:disabled) { --bg: var(--rose); --fg: #fff; --bd: var(--rose); }
+.btn-sm { height: 34px; padding: 0 .8rem; font-size: .84rem; border-radius: 8px; }
+.btn-lg { height: 52px; padding: 0 1.6rem; font-size: 1rem; border-radius: 12px; }
+.btn-block { width: 100%; }
+.btn-icon { width: 38px; padding: 0; }
+.btn .spinner { width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Forms ---------- */
+.field { display: grid; gap: .35rem; }
+.field > label, .label { font-size: .8rem; font-weight: 600; color: var(--muted); }
+.input, .select, textarea.input {
+  width: 100%; height: 44px; padding: 0 .85rem; border: 1px solid var(--line-2); border-radius: 10px; background: var(--surface);
+  font: inherit; color: var(--ink); transition: border-color .15s, box-shadow .15s;
+}
+textarea.input { height: auto; padding: .7rem .85rem; resize: vertical; }
+.select { appearance: none; padding-right: 2.2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235b687c' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .85rem center; }
+.input:focus, .select:focus { outline: none; border-color: var(--cobalt); box-shadow: 0 0 0 4px var(--cobalt-soft); }
+.input.ng-invalid.ng-touched, .select.ng-invalid.ng-touched { border-color: var(--rose); box-shadow: 0 0 0 4px var(--rose-soft); }
+.field-error { font-size: .78rem; color: var(--rose); }
+.form-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+.switch { position: relative; display: inline-flex; width: 42px; height: 24px; flex: 0 0 auto; cursor: pointer; }
+.switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.switch span { position: absolute; inset: 0; border-radius: 999px; background: var(--line-2); transition: background .2s; }
+.switch span::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / .25); transition: transform .2s; }
+.switch input:checked + span { background: var(--mint); }
+.switch input:checked + span::after { transform: translateX(18px); }
+.switch input:focus-visible + span { outline: 3px solid var(--cobalt-soft); }
+
+.seg { display: inline-flex; padding: 3px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; gap: 2px; }
+.seg button { border: 0; background: transparent; padding: .45rem .85rem; border-radius: 8px; font-weight: 600; font-size: .85rem; color: var(--muted); cursor: pointer; }
+.seg button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm); }
+
+/* ---------- Surfaces ---------- */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.card-pad { padding: 1.25rem; }
+.card-title { font-size: 1.05rem; font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--line); }
+.divider { height: 1px; background: var(--line); border: 0; margin: 1rem 0; }
+.perforation { height: 0; border-top: 2px dashed var(--line-2); margin: 0; position: relative; }
+
+/* ---------- Badges & chips ---------- */
+.badge { display: inline-flex; align-items: center; gap: .35rem; height: 24px; padding: 0 .55rem; border-radius: 6px; font-size: .74rem; font-weight: 700; background: var(--paper); color: var(--muted); white-space: nowrap; }
+.badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.badge.no-dot::before { display: none; }
+.badge-Confirmed, .badge-success { background: var(--mint-soft); color: var(--mint); }
+.badge-PendingPayment, .badge-warn { background: var(--amber-soft); color: var(--amber); }
+.badge-Cancelled, .badge-danger { background: var(--rose-soft); color: var(--rose); }
+.badge-Expired { background: var(--paper); color: var(--faint); }
+.badge-info { background: var(--cobalt-soft); color: var(--cobalt); }
+.badge-plum { background: var(--plum-soft); color: var(--plum); }
+.chip { display: inline-flex; align-items: center; gap: .3rem; height: 26px; padding: 0 .6rem; border-radius: 999px; font-size: .76rem; font-weight: 600; background: var(--paper); color: var(--ink-3); border: 1px solid var(--line); }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.table th { text-align: left; font-weight: 600; font-size: .76rem; color: var(--muted); padding: .7rem 1rem; background: #f8f9fb; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.table td { padding: .85rem 1rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.table tbody tr { transition: background .12s; }
+.table tbody tr:hover { background: #fafbfd; }
+.table tr:last-child td { border-bottom: 0; }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- Loading ---------- */
+.skeleton { background: linear-gradient(90deg, #eceff4 0%, #f6f7fa 40%, #eceff4 80%); background-size: 300% 100%; animation: shimmer 1.3s ease-in-out infinite; border-radius: 8px; }
+@keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+
+/* ---------- Empty states ---------- */
+.empty { text-align: center; padding: 3rem 1.5rem; color: var(--muted); }
+.empty h3 { color: var(--ink); font-size: 1.25rem; margin-bottom: .4rem; }
+.empty .btn { margin-top: 1.2rem; }
+
+/* ---------- Airline mark ---------- */
+.airline-mark { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-family: var(--font-display); font-weight: 800; font-size: .85rem; letter-spacing: .02em; flex: 0 0 auto; position: relative; overflow: hidden; }
+.airline-mark::after { content: ''; position: absolute; inset: auto -30% -55% 30%; height: 80%; background: rgb(255 255 255 / .22); transform: rotate(-24deg); }
+
+/* ---------- Banners ---------- */
+.banner { display: flex; gap: .8rem; align-items: flex-start; padding: .9rem 1rem; border-radius: 12px; font-size: .9rem; border: 1px solid; }
+.banner-info { background: var(--cobalt-soft); border-color: color-mix(in srgb, var(--cobalt) 20%, transparent); color: #1b2f8f; }
+.banner-warn { background: var(--amber-soft); border-color: color-mix(in srgb, var(--amber) 25%, transparent); color: #7a4b00; }
+.banner-danger { background: var(--rose-soft); border-color: color-mix(in srgb, var(--rose) 25%, transparent); color: #9b1c21; }
+.banner-success { background: var(--mint-soft); border-color: color-mix(in srgb, var(--mint) 25%, transparent); color: #06603f; }
+
+/* ---------- Print: only the ticket ---------- */
+@media print {
+  at-navbar, at-footer, .no-print { display: none !important; }
+  body { background: #fff; }
+  .page { padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

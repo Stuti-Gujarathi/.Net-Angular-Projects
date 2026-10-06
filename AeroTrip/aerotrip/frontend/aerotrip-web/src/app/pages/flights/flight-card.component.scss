@@ -1,0 +1,60 @@
+:host { display: block; }
+.ticket {
+  display: grid; grid-template-columns: 1fr 220px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+  transition: box-shadow .2s, border-color .2s; position: relative;
+  &:hover { box-shadow: var(--shadow); border-color: var(--line-2); }
+}
+.main { padding: 1.2rem 1.4rem 1rem; min-width: 0; position: relative; }
+.ribbons { display: flex; gap: .35rem; margin-bottom: .7rem; }
+.ribbon { font-size: .72rem; font-weight: 700; padding: .2rem .55rem; border-radius: 6px; background: var(--mint-soft); color: var(--mint); }
+.ribbon[data-tag='Fastest'] { background: var(--cobalt-soft); color: var(--cobalt); }
+.ribbon[data-tag='Best value'] { background: var(--coral-soft); color: var(--coral-ink); }
+.grid { display: grid; grid-template-columns: minmax(150px, 210px) 1fr; gap: 1.5rem; align-items: center; }
+.airline { display: flex; gap: .7rem; align-items: center; min-width: 0; }
+.marks { display: flex; }
+.marks .airline-mark + .airline-mark { margin-left: -12px; box-shadow: 0 0 0 2px var(--surface); }
+.names { display: grid; min-width: 0; b { font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } small { color: var(--muted); font-size: .78rem; } }
+.times { display: grid; grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center; }
+.pt { display: grid; b { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; letter-spacing: -.03em; line-height: 1; } span { font-weight: 600; color: var(--muted); font-size: .85rem; margin-top: .25rem; } }
+.pt.end { text-align: right; }
+sup { font-size: .7rem; color: var(--coral-ink); margin-left: 2px; font-family: var(--font-ui); font-weight: 700; }
+.path { display: grid; justify-items: center; gap: .3rem; small { font-size: .78rem; color: var(--muted); } .stop { color: var(--amber); font-weight: 600; } }
+.line { position: relative; width: 100%; height: 2px; background: var(--line-2); display: flex; justify-content: center; align-items: center; gap: 30%; }
+.line::before, .line::after { content: ''; position: absolute; width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--line-2); background: var(--surface); top: -5px; }
+.line::before { left: -4px; } .line::after { right: -4px; background: var(--ink); border-color: var(--ink); }
+.line.direct { background: linear-gradient(90deg, var(--line-2), var(--ink)); }
+.line i { width: 10px; height: 10px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 3px var(--surface); }
+.perks { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; margin-top: 1rem; padding-top: .85rem; border-top: 1px solid var(--line); font-size: .8rem; color: var(--muted);
+  span { display: inline-flex; align-items: center; gap: .35rem; } .good { color: var(--mint); } }
+.details-btn { margin-left: auto; border: 0; background: none; color: var(--cobalt); font-weight: 600; font-size: .82rem; cursor: pointer; display: inline-flex; align-items: center; gap: .25rem; }
+.open .details-btn at-icon { rotate: 180deg; }
+
+/* Ticket stub with perforation + notches */
+.stub { border-left: 2px dashed var(--line-2); padding: 1.2rem 1.3rem; display: flex; flex-direction: column; justify-content: center; gap: .6rem; position: relative; }
+.stub::before, .stub::after { content: ''; position: absolute; left: -11px; width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line); }
+.stub::before { top: -11px; clip-path: inset(50% 0 0 0); }
+.stub::after { bottom: -11px; clip-path: inset(0 0 50% 0); }
+.price { display: grid; b { font-size: 1.75rem; font-weight: 800; letter-spacing: -.035em; line-height: 1.05; } small { color: var(--muted); font-size: .76rem; } .total { color: var(--ink-3); font-weight: 600; margin-top: .2rem; } }
+.seats { font-size: .76rem; font-weight: 700; color: var(--rose); }
+
+.details { grid-column: 1 / -1; border-top: 1px solid var(--line); padding: 1.25rem 1.4rem 1.4rem; background: #fbfcfd; border-radius: 0 0 18px 18px; display: grid; gap: 1rem; animation: open .2s ease-out; }
+@keyframes open { from { opacity: 0; transform: translateY(-4px); } }
+.seg { display: grid; grid-template-columns: 220px 1fr; gap: 1rem 2rem; }
+.seg-air { display: flex; gap: .7rem; align-items: flex-start; div { display: grid; } small { color: var(--muted); font-size: .8rem; } }
+.timeline { list-style: none; margin: 0; padding: 0 0 0 1.2rem; border-left: 2px solid var(--line-2); display: grid; gap: .4rem; position: relative;
+  li { display: grid; grid-template-columns: 58px 1fr; gap: .8rem; position: relative; }
+  li:not(.dur)::before { content: ''; position: absolute; left: calc(-1.2rem - 6px); top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--ink); }
+  b.tnum { font-family: var(--font-display); font-size: 1.05rem; } div { display: grid; } small { color: var(--muted); font-size: .8rem; }
+  .dur { grid-template-columns: 1fr; padding-left: 70px; } }
+.seg-meta { grid-column: 2; display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .8rem; color: var(--muted); span { display: inline-flex; gap: .35rem; align-items: center; } }
+.layover { display: flex; gap: .6rem; align-items: center; padding: .7rem .9rem; border-radius: 10px; background: var(--amber-soft); color: #7a4b00; font-size: .85rem; }
+.layover.long { background: var(--rose-soft); color: #9b1c21; }
+
+@media (max-width: 860px) {
+  .ticket { grid-template-columns: 1fr; }
+  .stub { border-left: 0; border-top: 2px dashed var(--line-2); flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .stub::before, .stub::after { display: none; }
+  .stub .btn-block { width: auto; }
+  .grid { grid-template-columns: 1fr; gap: 1rem; }
+  .seg { grid-template-columns: 1fr; } .seg-meta { grid-column: 1; }
+}

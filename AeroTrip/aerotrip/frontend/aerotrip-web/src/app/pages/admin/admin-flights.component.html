@@ -1,0 +1,103 @@
+<header class="page-head">
+  <div><h1>Flights</h1><p>{{ activeCount() }} active schedules. Each one generates a dated flight for every operating day.</p></div>
+  <button type="button" class="btn btn-primary" (click)="openCreate()"><at-icon name="plus" />Add flight</button>
+</header>
+
+<div class="toolbar">
+  <div class="row">
+    <label class="search">
+      <at-icon name="search" [size]="16" />
+      <input type="search" placeholder="Flight number, city or route (DEL-BOM)" [value]="query()" (input)="query.set($any($event.target).value)" aria-label="Search flights" />
+    </label>
+    <select class="select airline-filter" [value]="airlineFilter()" (change)="airlineFilter.set($any($event.target).value)" aria-label="Airline">
+      <option value="">All airlines</option>
+      @for (a of airlines(); track a.code) { <option [value]="a.code">{{ a.name }}</option> }
+    </select>
+  </div>
+  <label class="check"><span class="switch"><input type="checkbox" [checked]="showInactive()" (change)="showInactive.set(!showInactive())" /><span></span></span>Show suspended</label>
+</div>
+
+<section class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr><th>Flight</th><th>Route</th><th>Departs</th><th>Duration</th><th>Operates</th><th class="num">Economy</th><th class="num">Business</th><th class="num">Seats</th><th>On sale</th><th></th></tr>
+      </thead>
+      <tbody>
+        @if (flights() === null) {
+          @for (i of [1, 2, 3, 4, 5]; track i) { <tr><td colspan="10"><div class="skeleton" style="height: 28px"></div></td></tr> }
+        }
+        @for (f of filtered(); track f.id) {
+          <tr [class.off]="!f.isActive">
+            <td><span class="fl"><span class="airline-mark sm" [style.background]="f.airlineColor">{{ f.airlineCode }}</span><span><b>{{ f.flightNumber }}</b><small class="muted">{{ f.aircraft }}</small></span></span></td>
+            <td class="nowrap"><b>{{ f.origin }} → {{ f.destination }}</b>@if (f.isInternational) { <span class="badge badge-info no-dot intl">Intl</span> }<br /><small class="muted">{{ f.originCity }} to {{ f.destinationCity }}</small></td>
+            <td class="tnum"><b>{{ f.departureTime }}</b></td>
+            <td class="nowrap">{{ f.durationMinutes | duration }}</td>
+            <td>
+              <div class="dots" [title]="daysLabel(f.operatingDays)">
+                @for (d of dayLabels; track $index; let i = $index) { <span [class.on]="f.operatingDays.includes(i)" [title]="dayNames[i]">{{ d }}</span> }
+              </div>
+            </td>
+            <td class="num">{{ f.economyFare | inr }}</td>
+            <td class="num">{{ f.businessFare ? (f.businessFare | inr) : '—' }}</td>
+            <td class="num tnum">{{ f.economySeats + f.premiumEconomySeats + f.businessSeats }}</td>
+            <td><label class="switch" [title]="f.isActive ? 'Suspend' : 'Put on sale'"><input type="checkbox" [checked]="f.isActive" (change)="toggleActive(f)" [attr.aria-label]="'On sale ' + f.flightNumber" /><span></span></label></td>
+            <td><button type="button" class="btn btn-ghost btn-sm" (click)="openEdit(f)"><at-icon name="edit" [size]="15" />Edit</button></td>
+          </tr>
+        } @empty {
+          @if (flights() !== null) { <tr><td colspan="10"><div class="empty"><h3>No flights match</h3><p>Clear the search or add a new flight.</p></div></td></tr> }
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<at-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)" [title]="editing() ? 'Edit ' + editing()!.flightNumber : 'Add a flight'"
+           [subtitle]="editing() ? 'Changes apply to future searches. Existing bookings keep their times.' : 'New flights appear in search immediately.'">
+  <form class="form" [formGroup]="form" (ngSubmit)="save()" id="flight-form" novalidate>
+    <div class="two">
+      <div class="field"><label for="fa">Airline</label>
+        <select id="fa" class="select" formControlName="airlineCode">@for (a of airlines(); track a.code) { <option [value]="a.code">{{ a.name }} ({{ a.code }})</option> }</select></div>
+      <div class="field"><label for="fn">Flight number</label><input id="fn" class="input" formControlName="flightNumber" placeholder="SF214" />
+        @if (form.controls.flightNumber.touched && form.controls.flightNumber.invalid) { <span class="field-error">Airline code plus 2–4 digits, like SF214.</span> }</div>
+    </div>
+    <div class="two">
+      <div class="field"><label for="fo">From</label>
+        <select id="fo" class="select" formControlName="origin">@for (a of airports(); track a.code) { <option [value]="a.code">{{ a.code }}, {{ a.city }}</option> }</select></div>
+      <div class="field"><label for="fd">To</label>
+        <select id="fd" class="select" formControlName="destination">@for (a of airports(); track a.code) { <option [value]="a.code">{{ a.code }}, {{ a.city }}</option> }</select></div>
+    </div>
+    <div class="three">
+      <div class="field"><label for="ft">Departure (local)</label><input id="ft" class="input" type="time" formControlName="departureTime" /></div>
+      <div class="field"><label for="fdu">Duration (min)</label><input id="fdu" class="input" type="number" formControlName="durationMinutes" /></div>
+      <div class="field"><label for="fb">Check-in bag (kg)</label><input id="fb" class="input" type="number" formControlName="checkInBaggageKg" /></div>
+    </div>
+    <div class="field"><label for="fac">Aircraft</label><input id="fac" class="input" formControlName="aircraft" /></div>
+    <div class="field">
+      <span class="label">Operating days</span>
+      <div class="days">
+        @for (d of dayNames; track d; let i = $index) { <button type="button" [class.on]="days().has(i)" (click)="toggleDay(i)" [title]="d">{{ d.slice(0, 3) }}</button> }
+      </div>
+    </div>
+
+    <h3>Cabins and base fares</h3>
+    <div class="two">
+      <div class="field"><label for="ef">Economy fare (₹)</label><input id="ef" class="input" type="number" formControlName="economyFare" /></div>
+      <div class="field"><label for="es">Economy seats</label><input id="es" class="input" type="number" formControlName="economySeats" /></div>
+      <div class="field"><label for="pf">Premium economy fare (₹)</label><input id="pf" class="input" type="number" formControlName="premiumEconomyFare" placeholder="Optional" /></div>
+      <div class="field"><label for="ps">Premium economy seats</label><input id="ps" class="input" type="number" formControlName="premiumEconomySeats" /></div>
+      <div class="field"><label for="bf">Business fare (₹)</label><input id="bf" class="input" type="number" formControlName="businessFare" placeholder="Optional" /></div>
+      <div class="field"><label for="bs">Business seats</label><input id="bs" class="input" type="number" formControlName="businessSeats" /></div>
+    </div>
+    <p class="muted hint">Base fares are before dynamic pricing. Search prices rise closer to departure and as cabins fill, and taxes are added on top.</p>
+
+    <label class="check"><span class="switch"><input type="checkbox" formControlName="mealIncluded" /><span></span></span>Complimentary meal</label>
+    <label class="check"><span class="switch"><input type="checkbox" formControlName="isActive" /><span></span></span>On sale</label>
+
+    @if (formError()) { <div class="banner banner-danger form-error"><at-icon name="alert" /><p>{{ formError() }}</p></div> }
+  </form>
+  <ng-container drawer-actions>
+    <button type="button" class="btn" (click)="drawerOpen.set(false)">Cancel</button>
+    <button type="submit" form="flight-form" class="btn btn-dark" [disabled]="saving()">@if (saving()) { <span class="spinner"></span> } {{ editing() ? 'Save changes' : 'Add flight' }}</button>
+  </ng-container>
+</at-drawer>

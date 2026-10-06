@@ -1,0 +1,9 @@
+.airline-filter { width: 190px; }
+.fl { display: inline-flex; gap: .6rem; align-items: center; > span:last-child { display: grid; } small { font-size: .74rem; white-space: nowrap; } }
+.airline-mark.sm { width: 30px; height: 30px; border-radius: 8px; font-size: .68rem; }
+.intl { margin-left: .4rem; height: 20px; font-size: .66rem; }
+.dots { display: flex; gap: 3px; span { width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center; font-size: .66rem; font-weight: 700; background: var(--paper); color: var(--faint); }
+  span.on { background: var(--ink); color: #fff; } }
+tr.off td { opacity: .5; }
+tr.off td:nth-last-child(-n+2) { opacity: 1; }
+.hint { font-size: .8rem; }

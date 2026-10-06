@@ -1,0 +1,122 @@
+<section class="hero">
+  <svg class="map" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="100%" r="70%">
+        <stop offset="0" stop-color="#ff7a4d" stop-opacity=".55" />
+        <stop offset=".55" stop-color="#ff7a4d" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <rect width="1200" height="520" fill="url(#glow)" />
+    <g class="arcs">
+      <path d="M180 300 Q 420 120 640 170" />
+      <path d="M640 170 Q 820 120 1010 250" />
+      <path d="M560 360 Q 600 250 640 170" />
+      <path d="M560 360 Q 780 420 1060 400" />
+      <path d="M180 300 Q 360 360 560 360" />
+      <path id="flight" class="hot" d="M180 300 Q 520 40 1010 250" />
+    </g>
+    <g class="cities">
+      <g transform="translate(180 300)"><circle r="5" /><text x="-14" y="-14">DXB</text></g>
+      <g transform="translate(640 170)"><circle r="6" /><text x="10" y="-12">DEL</text></g>
+      <g transform="translate(560 360)"><circle r="5" /><text x="-40" y="22">BOM</text></g>
+      <g transform="translate(1010 250)"><circle r="5" /><text x="12" y="-10">CCU</text></g>
+      <g transform="translate(1060 400)"><circle r="5" /><text x="12" y="20">SIN</text></g>
+    </g>
+    <!-- One orchestrated motion: a plane flying the highlighted route (SMIL keeps it locked to the arc at any size). -->
+    <g class="plane">
+      <g transform="rotate(90) translate(-12 -12)">
+        <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
+      </g>
+      <animateMotion dur="9s" repeatCount="indefinite" rotate="auto" keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines=".45 0 .55 1"
+                     path="M180 300 Q 520 40 1010 250" />
+    </g>
+  </svg>
+
+  <div class="container hero-inner">
+    <h1>Find the flight<br />that fits your day.</h1>
+    <p class="lede">Compare 110+ daily departures on 6 airlines, non-stop or with one connection, with live seat counts and fares that move like the real thing.</p>
+  </div>
+
+  <div class="container search-slot">
+    <at-search-form />
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h2>Popular routes</h2>
+      <p>Lowest one-way economy fare in the next two weeks, including taxes.</p>
+    </div>
+  </div>
+
+  @if (routes() === undefined) {
+    <div class="routes">
+      @for (i of [1, 2, 3, 4]; track i) { <div class="route-card skeleton" style="height: 168px"></div> }
+    </div>
+  } @else if (routes() === null) {
+    <div class="banner banner-warn"><at-icon name="alert" /><p>Fares are unavailable because the API isn't reachable. Start the backend on port 5080 and refresh.</p></div>
+  } @else {
+    <div class="routes">
+      @for (r of routes(); track r.from + r.to) {
+        <button type="button" class="route-card" (click)="searchRoute(r)">
+          <div class="codes">
+            <span>{{ r.from }}</span>
+            <svg viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><path d="M2 20 Q 50 -6 98 20" /></svg>
+            <span>{{ r.to }}</span>
+          </div>
+          <p class="cities">{{ r.fromCity }} to {{ r.toCity }}</p>
+          <div class="foot">
+            <div>
+              <small>from</small>
+              <b class="tnum">{{ r.lowestFare | inr }}</b>
+            </div>
+            <div class="meta">
+              <span>{{ r.lowestFareDate | date: 'EEE, d MMM' }}</span>
+              <span>{{ r.durationMinutes | duration }} non-stop</span>
+            </div>
+          </div>
+          @if (r.isInternational) { <span class="intl">International</span> }
+        </button>
+      }
+    </div>
+  }
+</section>
+
+<section class="container section" id="offers">
+  <div class="section-head">
+    <div>
+      <h2>Offers you can use today</h2>
+      <p>Apply a code on the review page. The best one for your trip is up to you.</p>
+    </div>
+  </div>
+  <div class="offers">
+    @for (o of offers(); track o.id) {
+      <article class="offer" [attr.data-theme]="o.theme">
+        <div class="stub">
+          <span class="amount display">{{ headline(o) }}</span>
+          <span class="off">off</span>
+        </div>
+        <div class="body">
+          <h3>{{ o.title }}</h3>
+          <p>{{ o.description }}</p>
+          <div class="code-row">
+            <span class="code">{{ o.code }}</span>
+            <button type="button" class="btn btn-sm" (click)="copy(o.code)">
+              <at-icon [name]="copied() === o.code ? 'check' : 'copy'" [size]="15" />{{ copied() === o.code ? 'Copied' : 'Copy code' }}
+            </button>
+          </div>
+          <small class="valid">Valid till {{ o.validTo | date: 'd MMM y' }}@if (o.minBookingAmount > 0) {, on bookings above {{ o.minBookingAmount | inr }}}</small>
+        </div>
+      </article>
+    } @empty {
+      <p class="muted">No live offers right now.</p>
+    }
+  </div>
+</section>
+
+<section class="container section promises">
+  <div><at-icon name="lock" [size]="22" /><b>Seats held while you pay</b><p>Your seats are reserved for 15 minutes the moment you continue to payment.</p></div>
+  <div><at-icon name="refresh" [size]="22" /><b>Refunds shown upfront</b><p>See exactly how much comes back before you confirm a cancellation.</p></div>
+  <div><at-icon name="clock" [size]="22" /><b>Realistic connections</b><p>One-stop trips always leave at least 75 minutes to change planes.</p></div>
+</section>

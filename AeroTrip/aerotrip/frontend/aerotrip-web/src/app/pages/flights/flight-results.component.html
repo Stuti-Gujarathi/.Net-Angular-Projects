@@ -1,0 +1,143 @@
+<section class="topbar">
+  <div class="container">
+    @if (params(); as p) {
+      <div class="summary">
+        <div class="route-title">
+          <h1>
+            <span>{{ data()?.fromCity || p.from }}</span>
+            <at-icon name="arrow-right" [size]="22" />
+            <span>{{ data()?.toCity || p.to }}</span>
+          </h1>
+          <p class="muted">{{ p.date | date: 'EEEE, d MMMM' }}, {{ p.pax }} {{ p.pax === 1 ? 'traveller' : 'travellers' }}, {{ cabinLabels[p.cabin] }}</p>
+        </div>
+        <button type="button" class="btn" (click)="modifyOpen.set(!modifyOpen())"><at-icon name="search" />{{ modifyOpen() ? 'Close' : 'Modify search' }}</button>
+      </div>
+    }
+    @if (modifyOpen() || !params()) {
+      <div class="modify">
+        @if (!params()) { <h1 class="start-title">Where to next?</h1> }
+        <at-search-form [initial]="params()" [compact]="true" />
+      </div>
+    }
+
+    @if (params() && calendar().length) {
+      <div class="calendar" role="list" aria-label="Fares on nearby dates">
+        @for (d of calendar(); track d.date) {
+          <button type="button" role="listitem" class="day" [class.on]="d.date === params()!.date" [class.cheap]="d.isCheapest" [disabled]="d.lowestFare === null" (click)="pickDate(d)">
+            <span class="dname">{{ d.date | date: 'EEE, d MMM' }}</span>
+            <b class="tnum">{{ d.lowestFare === null ? 'No flights' : (d.lowestFare | inr) }}</b>
+          </button>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+@if (params()) {
+  <section class="container body">
+    <aside class="filters" [class.open]="filtersOpen()">
+      <div class="f-head">
+        <h2>Filters</h2>
+        @if (activeFilterCount() > 0) { <button type="button" class="link" (click)="resetFilters()">Clear all</button> }
+        <button type="button" class="btn btn-ghost btn-icon close-f" (click)="filtersOpen.set(false)" aria-label="Close filters"><at-icon name="x" /></button>
+      </div>
+
+      <fieldset>
+        <legend>Stops</legend>
+        @for (o of stopOptions(); track o.value) {
+          <label class="opt" [class.disabled]="!o.count">
+            <input type="checkbox" [checked]="stops().has(o.value)" [disabled]="!o.count" (change)="toggleStop(o.value)" />
+            <span>{{ o.label }}</span>
+            <small class="tnum">{{ o.min === null ? '—' : (o.min | inr) }}</small>
+          </label>
+        }
+      </fieldset>
+
+      <fieldset>
+        <legend>Departure time</legend>
+        <div class="buckets">
+          @for (b of buckets; track b.key) {
+            <button type="button" [class.on]="times().has(b.key)" (click)="toggleTime(b.key)">
+              <at-icon [name]="b.icon" [size]="18" /><b>{{ b.label }}</b><small>{{ b.range }}</small>
+            </button>
+          }
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Airlines</legend>
+        @for (a of airlineOptions(); track a.code) {
+          <label class="opt">
+            <input type="checkbox" [checked]="airlines().has(a.code)" (change)="toggleAirline(a.code)" />
+            <span class="air"><i [style.background]="a.color"></i>{{ a.name }}</span>
+            <small class="tnum">{{ a.min | inr }}</small>
+          </label>
+        }
+      </fieldset>
+
+      @if (priceBounds().max > priceBounds().min) {
+        <fieldset>
+          <legend>Max price per adult</legend>
+          <input class="range" type="range" [min]="priceBounds().min" [max]="priceBounds().max" step="50"
+                 [value]="maxPrice() ?? priceBounds().max" (input)="maxPrice.set(+$any($event.target).value)" aria-label="Maximum price" />
+          <div class="range-vals tnum"><span>{{ priceBounds().min | inr }}</span><b>{{ (maxPrice() ?? priceBounds().max) | inr }}</b></div>
+        </fieldset>
+      }
+
+      <fieldset>
+        <label class="opt toggle">
+          <span>Refundable fares only</span>
+          <span class="switch"><input type="checkbox" [checked]="refundableOnly()" (change)="refundableOnly.set(!refundableOnly())" /><span></span></span>
+        </label>
+      </fieldset>
+    </aside>
+
+    <div class="list">
+      @if (loading()) {
+        <div class="sorts skeleton" style="height: 74px"></div>
+        @for (i of [1, 2, 3, 4]; track i) { <div class="skeleton" style="height: 150px; border-radius: 18px"></div> }
+      } @else if (error()) {
+        <div class="card empty">
+          <h3>We couldn't load flights</h3>
+          <p>{{ error() }}</p>
+          <button type="button" class="btn btn-dark" (click)="modifyOpen.set(true)">Change search</button>
+        </div>
+      } @else if (data()) {
+        @let d = data()!;
+        @if (d.totalResults === 0) {
+          <div class="card empty">
+            <h3>No flights on this date</h3>
+            <p>Try one of the dates above, or switch cabin. Some routes only connect through a hub on certain days.</p>
+            <button type="button" class="btn btn-dark" (click)="modifyOpen.set(true)">Change search</button>
+          </div>
+        } @else {
+          <div class="sorts" role="tablist">
+            @for (t of sortTabs(); track t.key) {
+              <button type="button" role="tab" [attr.aria-selected]="sort() === t.key" [class.on]="sort() === t.key" (click)="sort.set(t.key)">
+                <span>{{ t.label }}</span>
+                @if (t.top) { <b class="tnum">{{ t.top.farePerAdult | inr }}</b><small>{{ t.top.totalDurationMinutes | duration }}</small> }
+              </button>
+            }
+          </div>
+
+          <div class="list-head">
+            <p><b>{{ sorted().length }}</b> of {{ d.totalResults }} flights</p>
+            <button type="button" class="btn btn-sm show-f" (click)="filtersOpen.set(true)"><at-icon name="sliders" [size]="16" />Filters @if (activeFilterCount()) { ({{ activeFilterCount() }}) }</button>
+          </div>
+
+          @for (it of sorted(); track it.id) {
+            <at-flight-card [itinerary]="it" [passengers]="d.passengers" [expanded]="expandedId() === it.id"
+                            (toggle)="toggleExpanded(it.id)" (book)="book($event)" />
+          } @empty {
+            <div class="card empty">
+              <h3>No flights match these filters</h3>
+              <p>Loosen a filter to see more options.</p>
+              <button type="button" class="btn btn-dark" (click)="resetFilters()">Clear filters</button>
+            </div>
+          }
+          <p class="note muted"><at-icon name="info" [size]="15" />Fares include taxes and fees for one adult. You'll see the full price for all travellers before paying. <a routerLink="/" fragment="offers">See today's offers</a>.</p>
+        }
+      }
+    </div>
+  </section>
+}

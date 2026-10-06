@@ -1,0 +1,55 @@
+<header class="bar" [class.dark]="onHome() && !scrolled() && !mobileOpen()" [class.raised]="scrolled() || !onHome()">
+  <div class="container inner">
+    <a routerLink="/" class="brand" (click)="close()" aria-label="AeroTrip home">
+      <span class="glyph"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 17.5 27 7l-5.6 18.5-5.4-5.6-3.7 4.3v-5.6L23.5 10 9.8 16.4Z" /></svg></span>
+      <span class="word">aerotrip</span>
+    </a>
+
+    <nav class="links" [class.open]="mobileOpen()" aria-label="Main">
+      <a routerLink="/flights" routerLinkActive="on" [queryParams]="{}" (click)="close()">Flights</a>
+      <a routerLink="/" fragment="offers" (click)="close()">Offers</a>
+      @if (auth.isLoggedIn() && !auth.isAdmin()) {
+        <a routerLink="/account/trips" routerLinkActive="on" (click)="close()">My trips</a>
+      }
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin" routerLinkActive="on" (click)="close()">Admin console</a>
+      }
+      @if (!auth.isLoggedIn()) {
+        <a routerLink="/login" class="m-only" (click)="close()">Log in</a>
+        <a routerLink="/register" class="m-only" (click)="close()">Create account</a>
+      }
+    </nav>
+
+    <div class="right">
+      @if (auth.user(); as user) {
+        <div class="account">
+          <button type="button" class="avatar-btn" (click)="menuOpen.set(!menuOpen())" [attr.aria-expanded]="menuOpen()" aria-haspopup="menu">
+            <span class="avatar">{{ auth.initials() }}</span>
+            <span class="who"><b>{{ auth.firstName() }}</b><small>{{ user.role === 'Admin' ? 'Administrator' : 'Traveller' }}</small></span>
+            <at-icon name="chevron-down" [size]="16" />
+          </button>
+          @if (menuOpen()) {
+            <div class="menu" role="menu">
+              <div class="menu-head"><b>{{ user.fullName }}</b><small>{{ user.email }}</small></div>
+              @if (user.role === 'Admin') {
+                <a role="menuitem" routerLink="/admin" (click)="close()"><at-icon name="grid" />Admin console</a>
+                <a role="menuitem" routerLink="/admin/bookings" (click)="close()"><at-icon name="ticket" />All bookings</a>
+              } @else {
+                <a role="menuitem" routerLink="/account" (click)="close()"><at-icon name="grid" />Dashboard</a>
+                <a role="menuitem" routerLink="/account/trips" (click)="close()"><at-icon name="ticket" />My trips</a>
+                <a role="menuitem" routerLink="/account/profile" (click)="close()"><at-icon name="user" />Profile</a>
+              }
+              <button role="menuitem" type="button" (click)="logout()"><at-icon name="logout" />Log out</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a routerLink="/login" class="login">Log in</a>
+        <a routerLink="/register" class="btn btn-sm signup">Sign up</a>
+      }
+      <button type="button" class="burger" (click)="mobileOpen.set(!mobileOpen())" [attr.aria-expanded]="mobileOpen()" aria-label="Menu">
+        <at-icon [name]="mobileOpen() ? 'x' : 'menu'" />
+      </button>
+    </div>
+  </div>
+</header>

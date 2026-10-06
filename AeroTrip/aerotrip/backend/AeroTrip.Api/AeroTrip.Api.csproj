@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AeroTrip.Api</RootNamespace>
+    <AssemblyName>AeroTrip.Api</AssemblyName>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <!-- Run on .NET 8, or on a newer .NET (9, 10…) if 8 isn't installed. -->
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+
+  <!-- Zero third-party packages: auth, JSON, validation and hosting all come from the ASP.NET Core shared framework. -->
+
+</Project>

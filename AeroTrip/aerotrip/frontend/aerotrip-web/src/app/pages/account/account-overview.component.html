@@ -1,0 +1,64 @@
+@if (bookings() === undefined) {
+  <div class="stats">@for (i of [1, 2, 3, 4]; track i) { <div class="skeleton" style="height: 110px"></div> }</div>
+} @else {
+  <div class="stats">
+    <div class="stat"><at-icon name="ticket" /><small>Upcoming trips</small><b class="tnum">{{ upcoming().length }}</b></div>
+    <div class="stat"><at-icon name="plane" /><small>Trips completed</small><b class="tnum">{{ completed() }}</b></div>
+    <div class="stat"><at-icon name="wallet" /><small>Spent with AeroTrip</small><b class="tnum">{{ spent() | inr }}</b></div>
+    <div class="stat miles"><at-icon name="star" /><small>AeroMiles</small><b class="tnum">{{ miles().toLocaleString('en-IN') }}</b><span>5 miles per ₹100</span></div>
+  </div>
+
+  @for (p of pending(); track p.id) {
+    <div class="banner banner-warn pend">
+      <at-icon name="clock" />
+      <p>Your {{ p.segments[0].origin }} to {{ p.segments[p.segments.length - 1].destination }} booking is waiting for payment.</p>
+      <a class="btn btn-sm btn-dark" [routerLink]="['/payment', p.id]">Complete payment</a>
+    </div>
+  }
+
+  <div class="grid">
+    <section>
+      <h2 class="h">Next trip</h2>
+      @if (nextTrip(); as t) {
+        <a class="next" [routerLink]="['/trips', t.id]">
+          <div class="n-main">
+            <div class="n-top">
+              <span class="countdown">{{ daysToNext() === 0 ? 'Today' : daysToNext() === 1 ? 'Tomorrow' : 'In ' + daysToNext() + ' days' }}</span>
+              <span class="tnum pnr">PNR {{ t.pnr }}</span>
+            </div>
+            <div class="n-route">
+              <div><b>{{ t.segments[0].origin }}</b><span>{{ t.segments[0].originCity }}</span></div>
+              <div class="n-mid"><at-icon name="plane" [size]="22" /></div>
+              <div class="end"><b>{{ t.segments[t.segments.length - 1].destination }}</b><span>{{ t.segments[t.segments.length - 1].destinationCity }}</span></div>
+            </div>
+            <div class="n-meta">
+              <div><small>Date</small><b>{{ t.segments[0].departure | date: 'EEE, d MMM' }}</b></div>
+              <div><small>Departs</small><b class="tnum">{{ t.segments[0].departure | hhmm }}</b></div>
+              <div><small>Flight</small><b>{{ t.segments[0].flightNumber }}</b></div>
+              <div><small>Seat</small><b>{{ t.segments[0].seats[0] || '—' }}</b></div>
+            </div>
+          </div>
+          <div class="n-stub"><span>View ticket</span><at-icon name="arrow-right" /></div>
+        </a>
+      } @else {
+        <div class="card empty">
+          <h3>No trips planned</h3>
+          <p>Somewhere warm? Somewhere new? Search below and your next boarding pass will show up here.</p>
+        </div>
+      }
+    </section>
+
+    <section>
+      <div class="h-row"><h2 class="h">Recent bookings</h2><a routerLink="/account/trips">See all</a></div>
+      <div class="recent">
+        @for (b of recent(); track b.id) { <at-trip-row [b]="b" /> }
+        @empty { <p class="muted">Your bookings will appear here.</p> }
+      </div>
+    </section>
+  </div>
+
+  <section class="plan">
+    <h2 class="h">Plan your next trip</h2>
+    <at-search-form [compact]="true" />
+  </section>
+}

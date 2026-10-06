@@ -1,0 +1,143 @@
+<header class="page-head">
+  <div>
+    <h1>Overview</h1>
+    <p>Bookings, revenue and capacity across all AeroTrip flights.</p>
+  </div>
+  <button type="button" class="btn" (click)="load()"><at-icon name="refresh" />Refresh</button>
+</header>
+
+@if (!stats()) {
+  <div class="kpis">@for (i of [1, 2, 3, 4]; track i) { <div class="skeleton" style="height: 128px"></div> }</div>
+  <div class="skeleton" style="height: 320px; margin-top: 1rem"></div>
+} @else {
+  @let s = stats()!;
+  <div class="kpis">
+    <div class="kpi hero">
+      <small>Net revenue</small>
+      <b class="tnum">{{ s.netRevenue | inr }}</b>
+      <span class="delta" [class.down]="s.revenueChangePct < 0">{{ s.revenueChangePct >= 0 ? '▲' : '▼' }} {{ s.revenueChangePct }}% vs previous 7 days</span>
+    </div>
+    <div class="kpi">
+      <small>Bookings</small>
+      <b class="tnum">{{ s.totalBookings }}</b>
+      <span class="sub">{{ s.confirmedBookings }} confirmed, {{ s.totalPassengers }} passengers</span>
+    </div>
+    <div class="kpi lf">
+      <div>
+        <small>Load factor, next 7 days</small>
+        <b class="tnum">{{ s.loadFactorPct }}%</b>
+        <span class="sub">across {{ s.activeFlights }} active flights</span>
+      </div>
+      <div class="gauge" [style.--p]="s.loadFactorPct"></div>
+    </div>
+    <div class="kpi">
+      <small>Average booking</small>
+      <b class="tnum">{{ s.averageBookingValue | inr }}</b>
+      <span class="sub">{{ s.discountsGiven | inr }} in discounts, {{ s.refundsIssued | inr }} refunded</span>
+    </div>
+  </div>
+
+  <div class="row-2">
+    <section class="card chart-card">
+      <div class="card-head">
+        <div><h2 class="card-title">Revenue, last 14 days</h2><p class="muted small">{{ s.revenueLast7Days | inr }} in the last 7 days</p></div>
+      </div>
+      @if (chart(); as c) {
+        <div class="chart">
+          <svg [attr.viewBox]="'0 0 ' + W + ' ' + H" role="img" aria-label="Daily revenue bar chart">
+            @for (t of c.ticks; track t.y) {
+              <line [attr.x1]="PAD" [attr.x2]="W" [attr.y1]="t.y" [attr.y2]="t.y" class="grid" />
+              <text [attr.x]="0" [attr.y]="t.y + 4" class="tick">{{ t.label }}</text>
+            }
+            @for (b of c.bars; track b.date; let i = $index; let l = $last) {
+              <rect [attr.x]="b.x" [attr.y]="b.y" [attr.width]="b.w" [attr.height]="b.h" rx="5" class="bar" [class.today]="l" [class.dim]="hover() !== null && hover() !== i"
+                    (mouseenter)="hover.set(i)" (mouseleave)="hover.set(null)" />
+              @if (i % 2 === 1 || l) { <text [attr.x]="b.cx" [attr.y]="H - 6" class="xlab" text-anchor="middle">{{ b.date | date: 'd MMM' }}</text> }
+            }
+          </svg>
+          @if (hover() !== null) {
+            @let hb = c.bars[hover()!];
+            <div class="tip" [style.left.%]="(hb.cx / W) * 100">
+              <b>{{ hb.revenue | inr }}</b><small>{{ hb.bookings }} bookings, {{ hb.date | date: 'EEE d MMM' }}</small>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="card card-pad status">
+      <h2 class="card-title">Booking status</h2>
+      <div class="donut-wrap">
+        <div class="donut" [style.background]="donut()"><div><b class="tnum">{{ s.totalBookings }}</b><small>total</small></div></div>
+        <ul class="legend">
+          @for (x of s.statusBreakdown; track x.status) {
+            <li><i [style.background]="statusColors[x.status]"></i>{{ statusLabels[x.status] }}<b class="tnum">{{ x.count }}</b></li>
+          }
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <div class="row-3">
+    <section class="card card-pad">
+      <h2 class="card-title">Top routes by revenue</h2>
+      <ol class="routes">
+        @for (r of s.topRoutes; track r.label) {
+          <li>
+            <div class="r-top"><span><b>{{ r.origin }} → {{ r.destination }}</b><small>{{ r.label }}</small></span><b class="tnum">{{ r.revenue | inr }}</b></div>
+            <div class="r-bar"><i [style.width.%]="(r.revenue / maxRouteRevenue()) * 100"></i></div>
+            <small class="muted">{{ r.bookings }} bookings</small>
+          </li>
+        }
+      </ol>
+    </section>
+
+    <section class="card card-pad">
+      <h2 class="card-title">Airline share</h2>
+      <div class="stackbar">
+        @for (a of s.airlineShare; track a.code) { <i [style.width.%]="a.sharePct" [style.background]="a.color" [title]="a.name"></i> }
+      </div>
+      <ul class="airlines">
+        @for (a of s.airlineShare; track a.code) {
+          <li><span class="airline-mark sm" [style.background]="a.color">{{ a.code }}</span><span>{{ a.name }}</span><small class="tnum">{{ a.bookings }}</small><b class="tnum">{{ a.sharePct }}%</b></li>
+        }
+      </ul>
+    </section>
+
+    <section class="card card-pad mini">
+      <h2 class="card-title">At a glance</h2>
+      <dl>
+        <div><dt>Registered travellers</dt><dd class="tnum">{{ s.totalUsers }}</dd></div>
+        <div><dt>Live offers</dt><dd class="tnum">{{ s.activeOffers }}</dd></div>
+        <div><dt>Awaiting payment</dt><dd class="tnum">{{ s.pendingBookings }}</dd></div>
+        <div><dt>Cancellations</dt><dd class="tnum">{{ s.cancelledBookings }}</dd></div>
+      </dl>
+      <div class="links">
+        <a routerLink="/admin/flights" class="btn btn-sm"><at-icon name="plus" [size]="15" />Add flight</a>
+        <a routerLink="/admin/offers" class="btn btn-sm"><at-icon name="tag" [size]="15" />New offer</a>
+      </div>
+    </section>
+  </div>
+
+  <section class="card recent">
+    <div class="card-head"><h2 class="card-title">Latest bookings</h2><a routerLink="/admin/bookings">View all</a></div>
+    <div class="table-wrap">
+      <table class="table">
+        <thead><tr><th>PNR</th><th>Traveller</th><th>Route</th><th>Departure</th><th>Airline</th><th class="num">Total</th><th>Status</th></tr></thead>
+        <tbody>
+          @for (b of s.recentBookings; track b.id) {
+            <tr>
+              <td><a [routerLink]="['/trips', b.id]" class="pnr">{{ b.pnr }}</a></td>
+              <td><b>{{ b.userName }}</b><br /><small class="muted">{{ b.userEmail }}</small></td>
+              <td>{{ b.origin }} → {{ b.destination }}@if (b.stops) { <small class="muted"> (1 stop)</small> }</td>
+              <td>{{ b.departure | date: 'd MMM, HH:mm' }}</td>
+              <td><span class="air"><i [style.background]="b.airlineColor"></i>{{ b.airlineName }}</span></td>
+              <td class="num">{{ b.total | inr }}</td>
+              <td><span class="badge" [class]="'badge badge-' + b.status">{{ statusLabels[b.status] }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

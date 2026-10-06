@@ -1,0 +1,49 @@
+### AeroTrip API — try these from VS Code (REST Client) or Visual Studio / Rider.
+@api = http://localhost:5080/api
+
+### Endpoint index (lists every route and who can call it)
+GET http://localhost:5080/
+
+### Airports (guest)
+GET {{api}}/catalog/airports
+
+### Search flights (guest) — change the date to any future day
+GET {{api}}/flights/search?from=DEL&to=BOM&date=2026-12-15&passengers=2&cabin=Economy
+
+### Connecting flights only (no direct AMD–COK route)
+GET {{api}}/flights/search?from=AMD&to=COK&date=2026-12-15&passengers=1
+
+### Log in as a traveller — copy "token" into @token below
+# @name login
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{ "email": "riya@aerotrip.com", "password": "User@123" }
+
+###
+@token = {{login.response.body.token}}
+
+### My bookings
+GET {{api}}/bookings/my
+Authorization: Bearer {{token}}
+
+### Price quote with a coupon (replace itineraryId with an "id" from search)
+POST {{api}}/bookings/quote
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "itineraryId": "SF101-20261215", "cabin": "Economy", "passengers": 1, "extras": { "meal": true }, "couponCode": "FLYNEW" }
+
+### Admin login
+# @name adminLogin
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@aerotrip.com", "password": "Admin@123" }
+
+###
+@adminToken = {{adminLogin.response.body.token}}
+
+### Admin dashboard stats
+GET {{api}}/admin/stats
+Authorization: Bearer {{adminToken}}

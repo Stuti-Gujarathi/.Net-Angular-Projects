@@ -1,0 +1,38 @@
+<footer [class.compact]="compact()">
+  @if (!compact()) {
+    <div class="container top">
+      <div class="brand">
+        <p class="word">aerotrip</p>
+        <p class="tag">Compare direct and connecting flights across India and beyond, then book in minutes.</p>
+      </div>
+      <nav aria-label="Footer">
+        <div>
+          <b>Travel</b>
+          <a routerLink="/flights">Search flights</a>
+          <a routerLink="/" fragment="offers">Offers</a>
+          <a routerLink="/account/trips">Manage booking</a>
+        </div>
+        <div>
+          <b>Support</b>
+          <a href="mailto:support@aerotrip.com">support&#64;aerotrip.com</a>
+          <span>+91 22 0000 0000</span>
+          <span>24×7 for travel within 48 hours</span>
+        </div>
+        <div>
+          <b>Policies</b>
+          <span>Cancellation and refunds</span>
+          <span>Privacy</span>
+          <span>Terms of use</span>
+        </div>
+      </nav>
+    </div>
+  }
+
+  <div class="container credit-wrap">
+    <hr class="line" />
+    <div class="credit">
+      <span class="copy">© {{ year }} AeroTrip</span>
+      <span class="maker">Crafted by <b>Suti Gujarathi</b><span class="handle">&#64;codewithsuti</span></span>
+    </div>
+  </div>
+</footer>

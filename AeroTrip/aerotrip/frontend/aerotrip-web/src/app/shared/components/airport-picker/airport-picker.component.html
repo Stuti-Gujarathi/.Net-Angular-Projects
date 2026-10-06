@@ -1,0 +1,29 @@
+<button type="button" class="trigger" [class.invalid]="invalid()" [class.is-open]="open()" (click)="toggle()"
+        [attr.aria-expanded]="open()" aria-haspopup="listbox">
+  <span class="lbl">{{ label() }}</span>
+  @if (selected(); as a) {
+    <span class="code">{{ a.code }}</span>
+    <span class="city">{{ a.city }}</span>
+  } @else {
+    <span class="code placeholder">———</span>
+    <span class="city">Choose an airport</span>
+  }
+</button>
+
+@if (open()) {
+  <div class="panel" role="dialog" [attr.aria-label]="label()">
+    <input #searchBox class="input" type="text" [value]="query()" (input)="onQuery($any($event.target).value)" (keydown)="onKey($event)"
+           placeholder="City, airport or code" autocomplete="off" role="combobox" aria-autocomplete="list" [attr.aria-expanded]="true" />
+    <ul role="listbox">
+      @for (a of results(); track a.code; let i = $index) {
+        <li role="option" [attr.aria-selected]="i === active()" [class.active]="i === active()" (mouseenter)="active.set(i)" (click)="choose(a)">
+          <span class="li-code">{{ a.code }}</span>
+          <span class="li-main"><b>{{ a.city }}</b><small>{{ a.name }}</small></span>
+          @if (a.isInternational) { <span class="li-intl">{{ a.country }}</span> }
+        </li>
+      } @empty {
+        <li class="none">No airports match “{{ query() }}”.</li>
+      }
+    </ul>
+  </div>
+}

@@ -1,0 +1,136 @@
+<div class="container page">
+  @if (error()) {
+    <div class="card empty"><h3>Booking not found</h3><p>{{ error() }}</p><a routerLink="/account/trips" class="btn btn-dark">Go to my trips</a></div>
+  } @else if (!booking()) {
+    <div class="skeleton" style="height: 120px; margin-bottom: 1rem"></div>
+    <div class="skeleton" style="height: 320px"></div>
+  } @else {
+    @let b = booking()!;
+
+    @if (justBooked()) {
+      <header class="celebrate no-print">
+        <div class="check"><at-icon name="check" [size]="30" [stroke]="3" /></div>
+        <div>
+          <at-booking-steps [current]="3" />
+          <h1>You're going to {{ destinationCity() }}!</h1>
+          <p class="muted">Your e-ticket is below and has been sent to {{ b.contactEmail }}.</p>
+        </div>
+      </header>
+    } @else {
+      <header class="page-head no-print">
+        <div>
+          <a [routerLink]="auth.isAdmin() ? '/admin/bookings' : '/account/trips'" class="back"><at-icon name="chevron-left" [size]="16" />{{ auth.isAdmin() ? 'All bookings' : 'My trips' }}</a>
+          <h1>{{ b.segments[0].originCity }} to {{ destinationCity() }}</h1>
+        </div>
+        <span class="badge" [class]="'badge badge-' + b.status">{{ isPast() ? 'Completed' : statusLabels[b.status] }}</span>
+      </header>
+    }
+
+    @switch (b.status) {
+      @case ('PendingPayment') {
+        <div class="banner banner-warn no-print"><at-icon name="clock" /><p>This booking is waiting for payment. Seats are held for a few more minutes.</p><button class="btn btn-sm btn-dark" (click)="completePayment()">Complete payment</button></div>
+      }
+      @case ('Cancelled') {
+        <div class="banner banner-danger no-print"><at-icon name="info" /><p>Cancelled on {{ b.cancelledAt | date: 'd MMM y, HH:mm' }}. @if (b.refundAmount > 0) { Refund of <b>{{ b.refundAmount | inr }}</b> goes back to {{ b.payment?.maskedInstrument }} within 5–7 working days. } @else { No refund was due on this booking. }</p></div>
+      }
+      @case ('Expired') {
+        <div class="banner banner-info no-print"><at-icon name="info" /><p>Payment wasn't completed in time, so the held seats were released. You weren't charged.</p></div>
+      }
+    }
+
+    <!-- Boarding passes, one per flight -->
+    <section class="passes" [class.void]="b.status === 'Cancelled' || b.status === 'Expired'">
+      @for (s of b.segments; track s.flightInstanceId; let i = $index) {
+        <article class="pass">
+          <div class="pass-main">
+            <div class="pass-top">
+              <div class="air"><span class="airline-mark" [style.background]="s.airlineColor">{{ s.airlineCode }}</span><div><b>{{ s.airlineName }}</b><small>{{ cabinLabels[b.cabin] }}</small></div></div>
+              <div class="pnr"><small>PNR</small><b class="tnum">{{ b.pnr }}</b></div>
+            </div>
+            <div class="pass-route">
+              <div><b>{{ s.origin }}</b><span>{{ s.originCity }}</span></div>
+              <div class="mid"><at-icon name="plane" [size]="22" /><small>{{ s.durationMinutes | duration }}</small></div>
+              <div class="end"><b>{{ s.destination }}</b><span>{{ s.destinationCity }}</span></div>
+            </div>
+            <div class="pass-grid">
+              <div><small>Date</small><b>{{ s.departure | date: 'd MMM y' }}</b></div>
+              <div><small>Flight</small><b>{{ s.flightNumber }}</b></div>
+              <div><small>Departs</small><b class="tnum">{{ s.departure | hhmm }}</b></div>
+              <div><small>Arrives</small><b class="tnum">{{ s.arrival | hhmm }}@if ((s.departure | dayShift: s.arrival) > 0) {<sup>+1</sup>}</b></div>
+              <div><small>Boarding</small><b class="tnum">{{ s.departure | hhmm }} −45m</b></div>
+              <div><small>Gate</small><b>Opens 3h before</b></div>
+            </div>
+            <table class="pax">
+              <thead><tr><th>Traveller</th><th>Type</th><th class="r">Seat</th></tr></thead>
+              <tbody>
+                @for (p of b.passengers; track $index; let pi = $index) {
+                  <tr><td>{{ p.firstName }} {{ p.lastName }}</td><td>{{ p.type }}, {{ p.age }}</td><td class="r seat">{{ s.seats[pi] || 'At check-in' }}</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="pass-stub">
+            <small>Seq {{ i + 1 }}/{{ b.segments.length }}</small>
+            <div class="barcode" aria-hidden="true"></div>
+            <b class="tnum">{{ b.pnr }}</b>
+            <small>{{ s.aircraft }}</small>
+          </div>
+        </article>
+      }
+    </section>
+
+    <div class="below">
+      <section class="card">
+        <div class="card-head"><h2 class="card-title">Payment</h2>
+          @if (b.payment) { <span class="muted small">{{ b.payment.maskedInstrument }}, ref {{ b.payment.reference }}</span> }
+        </div>
+        <dl class="fare">
+          <div><dt>Base fare</dt><dd class="tnum">{{ b.fare.baseFare | inr }}</dd></div>
+          <div><dt>Taxes and airport fees</dt><dd class="tnum">{{ b.fare.taxes | inr }}</dd></div>
+          <div><dt>Convenience fee</dt><dd class="tnum">{{ b.fare.convenienceFee | inr }}</dd></div>
+          @if (b.fare.extrasTotal) { <div><dt>Add-ons</dt><dd class="tnum">{{ b.fare.extrasTotal | inr }}</dd></div> }
+          @if (b.fare.discount) { <div class="disc"><dt>Discount ({{ b.couponCode }})</dt><dd class="tnum">−{{ b.fare.discount | inr }}</dd></div> }
+          <div class="tot"><dt>{{ b.status === 'Confirmed' || b.status === 'Cancelled' ? 'Paid' : 'Total' }}</dt><dd class="tnum">{{ b.fare.total | inr }}</dd></div>
+          @if (b.refundAmount) { <div class="disc"><dt>Refunded</dt><dd class="tnum">{{ b.refundAmount | inr }}</dd></div> }
+        </dl>
+      </section>
+
+      <section class="card card-pad extras">
+        <h2 class="card-title">Included and added</h2>
+        <ul>
+          <li><at-icon name="bag" [size]="16" />{{ b.extras.extraBaggage ? 'Extra 15 kg check-in baggage' : 'Standard baggage allowance' }}</li>
+          @if (b.extras.meal) { <li><at-icon name="meal" [size]="16" />Pre-booked meal</li> }
+          @if (b.extras.travelInsurance) { <li><at-icon name="shield" [size]="16" />Travel insurance</li> }
+          @if (b.extras.flexibleDateChange) { <li><at-icon name="refresh" [size]="16" />Flexible ticket, full refund on cancellation</li> }
+          <li><at-icon name="seat" [size]="16" />Seat preference: {{ b.extras.seatPreference === 'NoPreference' ? 'none' : b.extras.seatPreference.toLowerCase() }}</li>
+          <li><at-icon name="mail" [size]="16" />{{ b.contactEmail }}, {{ b.contactPhone }}</li>
+        </ul>
+        <div class="actions no-print">
+          @if (b.status === 'Confirmed') { <button type="button" class="btn" (click)="print()"><at-icon name="print" />Print or save PDF</button> }
+          @if (b.canCancel && !auth.isAdmin()) { <button type="button" class="btn btn-danger" (click)="openCancel()">Cancel booking</button> }
+          @if (justBooked()) { <a routerLink="/account/trips" class="btn btn-dark">Go to my trips</a> }
+        </div>
+      </section>
+    </div>
+
+    <at-modal [open]="cancelOpen()" (closed)="cancelOpen.set(false)">
+      <h2 class="m-title">Cancel this booking?</h2>
+      @if (cancelQuote(); as q) {
+        <p class="muted m-policy">{{ q.policy }}</p>
+        <dl class="m-fare">
+          <div><dt>Amount paid</dt><dd class="tnum">{{ q.totalPaid | inr }}</dd></div>
+          <div><dt>Cancellation charges</dt><dd class="tnum">−{{ q.cancellationCharges | inr }}</dd></div>
+          <div class="m-refund"><dt>You get back</dt><dd class="tnum display">{{ q.refundAmount | inr }}</dd></div>
+        </dl>
+        <div class="m-actions">
+          <button type="button" class="btn" (click)="cancelOpen.set(false)">Keep booking</button>
+          <button type="button" class="btn btn-danger" (click)="confirmCancel()" [disabled]="cancelling()">
+            @if (cancelling()) { <span class="spinner"></span> } Cancel and refund {{ q.refundAmount | inr }}
+          </button>
+        </div>
+      } @else {
+        <div class="skeleton" style="height: 140px; margin-top: 1rem"></div>
+      }
+    </at-modal>
+  }
+</div>

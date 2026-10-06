@@ -1,0 +1,193 @@
+<div class="container page">
+  <div class="head">
+    <a routerLink="/flights" class="back"><at-icon name="chevron-left" [size]="16" />Back to results</a>
+    <at-booking-steps [current]="1" />
+  </div>
+
+  @if (loadError()) {
+    <div class="card empty">
+      <h3>This flight can't be booked</h3>
+      <p>{{ loadError() }}</p>
+      <a routerLink="/flights" class="btn btn-dark">Search again</a>
+    </div>
+  } @else if (!itinerary()) {
+    <div class="layout">
+      <div class="stack"><div class="skeleton" style="height: 220px"></div><div class="skeleton" style="height: 320px"></div></div>
+      <div class="skeleton" style="height: 420px"></div>
+    </div>
+  } @else {
+    @let it = itinerary()!;
+    <form class="layout" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="stack">
+        <!-- Flight -->
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">{{ it.segments[0].originCity }} to {{ it.segments[it.segments.length - 1].destinationCity }}</h2>
+              <p class="muted small">{{ it.departure | date: 'EEEE, d MMMM y' }}, {{ cabinLabels[cabin()] }}, {{ it.stops === 0 ? 'non-stop' : '1 stop' }}, {{ it.totalDurationMinutes | duration }}</p>
+            </div>
+            @if (it.refundable) { <span class="badge badge-success">Refundable</span> } @else { <span class="badge badge-warn">Partially refundable</span> }
+          </div>
+          <div class="segments">
+            @for (s of it.segments; track s.flightId; let i = $index) {
+              <div class="leg">
+                <span class="airline-mark" [style.background]="s.airlineColor">{{ s.airlineCode }}</span>
+                <div class="leg-times">
+                  <div><b class="tnum">{{ s.departure | hhmm }}</b><span>{{ s.origin }}</span></div>
+                  <div class="leg-line"><small>{{ s.durationMinutes | duration }}</small></div>
+                  <div><b class="tnum">{{ s.arrival | hhmm }}@if ((s.departure | dayShift: s.arrival) > 0) {<sup>+1</sup>}</b><span>{{ s.destination }}</span></div>
+                </div>
+                <div class="leg-info"><b>{{ s.airlineName }}</b><small>{{ s.flightNumber }}, {{ s.aircraft }}</small><small>{{ s.checkInBaggageKg }} kg check-in, {{ s.cabinBaggageKg }} kg cabin</small></div>
+              </div>
+              @if (it.layovers[i]; as l) {
+                <div class="lay"><at-icon name="clock" [size]="14" />{{ l.minutes | duration }} layover in {{ l.city }}</div>
+              }
+            }
+          </div>
+        </section>
+
+        <!-- Travellers -->
+        <section class="card card-pad">
+          <h2 class="card-title">Travellers</h2>
+          <p class="muted small">Names must match the government ID each person will carry.</p>
+          <div formArrayName="passengers" class="pax-list">
+            @for (p of passengers.controls; track $index; let i = $index) {
+              <fieldset class="pax" [formGroupName]="i">
+                <legend><span class="pax-n">{{ i + 1 }}</span>Traveller {{ i + 1 }}@if (i === 0) { <small>Primary</small> }</legend>
+                <div class="pax-grid">
+                  <div class="field">
+                    <label [for]="'fn' + i">First name</label>
+                    <input class="input" [id]="'fn' + i" formControlName="firstName" autocomplete="given-name" />
+                  </div>
+                  <div class="field">
+                    <label [for]="'ln' + i">Last name</label>
+                    <input class="input" [id]="'ln' + i" formControlName="lastName" autocomplete="family-name" />
+                  </div>
+                  <div class="field">
+                    <label [for]="'g' + i">Gender</label>
+                    <select class="select" [id]="'g' + i" formControlName="gender">
+                      <option value="Female">Female</option><option value="Male">Male</option><option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label [for]="'a' + i">Age</label>
+                    <input class="input" [id]="'a' + i" type="number" min="2" max="110" formControlName="age" />
+                  </div>
+                </div>
+                @if (p.touched && p.invalid) { <span class="field-error">Fill in every field. Age must be 2 or more.</span> }
+              </fieldset>
+            }
+          </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="card card-pad">
+          <h2 class="card-title">Where should we send the ticket?</h2>
+          <div class="form-grid contact">
+            <div class="field">
+              <label for="ce">Email</label>
+              <input id="ce" class="input" type="email" formControlName="contactEmail" />
+              @if (form.controls.contactEmail.touched && form.controls.contactEmail.invalid) { <span class="field-error">Enter a valid email.</span> }
+            </div>
+            <div class="field">
+              <label for="cp">Mobile</label>
+              <input id="cp" class="input" inputmode="numeric" maxlength="10" formControlName="contactPhone" />
+              @if (form.controls.contactPhone.touched && form.controls.contactPhone.invalid) { <span class="field-error">Enter a 10-digit mobile number.</span> }
+            </div>
+          </div>
+        </section>
+
+        <!-- Add-ons -->
+        <section class="card card-pad">
+          <h2 class="card-title">Make the trip easier</h2>
+          <div class="addons">
+            <button type="button" class="addon" [class.on]="extras().extraBaggage" (click)="toggleExtra('extraBaggage')">
+              <at-icon name="bag" [size]="22" />
+              <div><b>Extra 15 kg baggage</b><small>₹1,500 per traveller. Cheaper than paying at the airport.</small></div>
+              <span class="tick"><at-icon name="check" [size]="14" [stroke]="3" /></span>
+            </button>
+            @if (!mealsIncluded()) {
+              <button type="button" class="addon" [class.on]="extras().meal" (click)="toggleExtra('meal')">
+                <at-icon name="meal" [size]="22" />
+                <div><b>Pre-booked meal</b><small>₹350 per traveller per flight, served first.</small></div>
+                <span class="tick"><at-icon name="check" [size]="14" [stroke]="3" /></span>
+              </button>
+            }
+            <button type="button" class="addon" [class.on]="extras().travelInsurance" (click)="toggleExtra('travelInsurance')">
+              <at-icon name="shield" [size]="22" />
+              <div><b>Travel insurance</b><small>₹249 per traveller. Covers delays, lost bags and medical cover.</small></div>
+              <span class="tick"><at-icon name="check" [size]="14" [stroke]="3" /></span>
+            </button>
+            <button type="button" class="addon" [class.on]="extras().flexibleDateChange" (click)="toggleExtra('flexibleDateChange')">
+              <at-icon name="refresh" [size]="22" />
+              <div><b>Flexible ticket</b><small>₹699 per traveller. Cancel any time before departure for a full refund.</small></div>
+              <span class="tick"><at-icon name="check" [size]="14" [stroke]="3" /></span>
+            </button>
+          </div>
+          <div class="seat-pref">
+            <span class="label"><at-icon name="seat" [size]="16" />Seat preference</span>
+            <div class="seg">
+              @for (s of seatPrefs; track s.value) {
+                <button type="button" [class.on]="extras().seatPreference === s.value" (click)="setSeat(s.value)">{{ s.label }}</button>
+              }
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Fare summary -->
+      <aside class="summary">
+        <div class="card">
+          <div class="card-head"><h2 class="card-title">Fare summary</h2><span class="muted small">{{ passengerCount() }} {{ passengerCount() === 1 ? 'traveller' : 'travellers' }}</span></div>
+          @if (quote(); as q) {
+            <dl class="fare">
+              <div><dt>Base fare</dt><dd class="tnum">{{ q.fare.baseFare | inr }}</dd></div>
+              <div><dt>Taxes and airport fees</dt><dd class="tnum">{{ q.fare.taxes | inr }}</dd></div>
+              <div><dt>Convenience fee</dt><dd class="tnum">{{ q.fare.convenienceFee | inr }}</dd></div>
+              @if (q.fare.baggageFee) { <div><dt>Extra baggage</dt><dd class="tnum">{{ q.fare.baggageFee | inr }}</dd></div> }
+              @if (q.fare.mealFee) { <div><dt>Meals</dt><dd class="tnum">{{ q.fare.mealFee | inr }}</dd></div> }
+              @if (q.fare.insuranceFee) { <div><dt>Travel insurance</dt><dd class="tnum">{{ q.fare.insuranceFee | inr }}</dd></div> }
+              @if (q.fare.flexFee) { <div><dt>Flexible ticket</dt><dd class="tnum">{{ q.fare.flexFee | inr }}</dd></div> }
+              @if (q.fare.discount) { <div class="disc"><dt>Discount ({{ q.appliedCoupon }})</dt><dd class="tnum">−{{ q.fare.discount | inr }}</dd></div> }
+            </dl>
+            <div class="total"><span>Total</span><b class="tnum display">{{ q.fare.total | inr }}</b></div>
+          } @else {
+            <div class="card-pad"><div class="skeleton" style="height: 160px"></div></div>
+          }
+
+          <div class="coupon">
+            @if (couponApplied()) {
+              <div class="applied">
+                <at-icon name="tag" [size]="16" />
+                <span><b>{{ quote()?.appliedCoupon }}</b> {{ quote()?.couponMessage }}</span>
+                <button type="button" class="link" (click)="removeCoupon()">Remove</button>
+              </div>
+            } @else {
+              <div class="coupon-row">
+                <input class="input" placeholder="Coupon code" [value]="couponInput()" (input)="couponInput.set($any($event.target).value)" (keydown.enter)="$event.preventDefault(); applyCoupon()" />
+                <button type="button" class="btn" (click)="applyCoupon()">Apply</button>
+              </div>
+              @if (couponCode() && quote() && !quote()!.couponValid && quote()!.couponMessage) {
+                <p class="field-error">{{ quote()!.couponMessage }}</p>
+              }
+              @if (offers().length) {
+                <div class="offer-chips">
+                  @for (o of offers(); track o.id) {
+                    <button type="button" class="chip" (click)="applyCoupon(o.code)" [title]="o.description">{{ o.code }}</button>
+                  }
+                </div>
+              }
+            }
+          </div>
+
+          <div class="card-pad cta">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="submitting() || !quote()">
+              @if (submitting()) { <span class="spinner"></span> Holding your seats } @else { Continue to payment }
+            </button>
+            <p class="muted small"><at-icon name="lock" [size]="14" />We hold your seats for 15 minutes while you pay.</p>
+          </div>
+        </div>
+      </aside>
+    </form>
+  }
+</div>

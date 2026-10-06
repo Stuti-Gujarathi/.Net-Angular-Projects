@@ -1,0 +1,24 @@
+footer { background: var(--ink); color: #c5cedd; padding: 3.5rem 0 1.5rem; margin-top: auto; }
+.top { display: grid; grid-template-columns: 1.2fr 2fr; gap: 3rem; padding-bottom: 2.5rem; }
+.word { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; letter-spacing: -.04em; color: #fff; }
+.tag { margin-top: .6rem; max-width: 34ch; line-height: 1.6; }
+nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+nav div { display: grid; gap: .55rem; align-content: start; font-size: .9rem; }
+nav b { color: #fff; font-size: .82rem; margin-bottom: .2rem; }
+nav a { color: #c5cedd; }
+nav a:hover { color: #fff; }
+.line { border: 0; height: 1px; background: rgb(255 255 255 / .12); margin: 0 0 1.2rem; }
+.credit { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; font-size: .85rem; }
+.maker { display: inline-flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+.maker b { color: #fff; font-weight: 600; }
+.handle { color: var(--coral); font-weight: 600; padding-left: .55rem; border-left: 1px solid rgb(255 255 255 / .2); }
+
+.compact { background: transparent; color: var(--muted); padding: 1.25rem 0; }
+.compact .line { background: var(--line); }
+.compact .maker b { color: var(--ink); }
+.compact .handle { border-color: var(--line-2); }
+
+@media (max-width: 760px) {
+  .top { grid-template-columns: 1fr; gap: 2rem; }
+  nav { grid-template-columns: 1fr 1fr; }
+}

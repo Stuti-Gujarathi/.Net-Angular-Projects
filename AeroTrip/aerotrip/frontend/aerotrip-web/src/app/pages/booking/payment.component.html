@@ -1,0 +1,139 @@
+<div class="container page">
+  <div class="head">
+    <h1 class="title">Payment</h1>
+    <at-booking-steps [current]="2" />
+  </div>
+
+  @if (loadError()) {
+    <div class="card empty"><h3>We couldn't open this payment</h3><p>{{ loadError() }}</p><a routerLink="/account/trips" class="btn btn-dark">Go to my trips</a></div>
+  } @else if (!booking()) {
+    <div class="layout"><div class="skeleton" style="height: 480px"></div><div class="skeleton" style="height: 360px"></div></div>
+  } @else {
+    @let b = booking()!;
+    @if (b.status === 'Expired' || b.status === 'Cancelled' || expired()) {
+      <div class="card empty">
+        <h3>Your seat hold has ended</h3>
+        <p>Fares and seats change quickly, so held seats are released after 15 minutes. Search again to get fresh availability.</p>
+        <a routerLink="/flights" [queryParams]="{ from: b.segments[0].origin, to: b.segments[b.segments.length - 1].destination, date: b.segments[0].departure.slice(0, 10), pax: b.passengers.length, cabin: b.cabin }" class="btn btn-dark">Search this route again</a>
+      </div>
+    } @else {
+      <div class="layout">
+        <section class="card pay">
+          <div class="hold" [class.urgent]="secondsLeft() < 120">
+            <div class="ring" [style.--p]="holdPct()"><at-icon name="lock" [size]="16" /></div>
+            <div><b>Seats held for <span class="tnum">{{ countdown() }}</span></b><small>Complete payment before the timer runs out.</small></div>
+          </div>
+
+          <div class="methods" role="tablist">
+            <button type="button" role="tab" [class.on]="method() === 'Card'" (click)="method.set('Card'); payError.set(null)"><at-icon name="card" />Card</button>
+            <button type="button" role="tab" [class.on]="method() === 'Upi'" (click)="method.set('Upi'); payError.set(null)"><at-icon name="phone" />UPI</button>
+            <button type="button" role="tab" [class.on]="method() === 'NetBanking'" (click)="method.set('NetBanking'); payError.set(null)"><at-icon name="bank" />Net banking</button>
+          </div>
+
+          <div class="method-body">
+            @switch (method()) {
+              @case ('Card') {
+                <div class="card-area">
+                  <div class="plastic" aria-hidden="true">
+                    <div class="pl-top"><span class="chip-img"></span><span class="brand">{{ brand() }}</span></div>
+                    <div class="pl-num tnum">{{ cardPreview().number || '•••• •••• •••• ••••' }}</div>
+                    <div class="pl-bottom">
+                      <div><small>Card holder</small><b>{{ cardPreview().name || 'YOUR NAME' }}</b></div>
+                      <div><small>Expires</small><b class="tnum">{{ cardPreview().expiry || 'MM/YY' }}</b></div>
+                    </div>
+                  </div>
+                  <form class="card-form" [formGroup]="card" (ngSubmit)="pay()" novalidate>
+                    <div class="field full">
+                      <label for="cn">Card number</label>
+                      <input id="cn" class="input tnum" inputmode="numeric" autocomplete="cc-number" formControlName="number" (input)="formatNumber($event)" placeholder="1234 5678 9012 3456" />
+                      @if (card.controls.number.touched && card.controls.number.invalid) { <span class="field-error">Enter the full card number.</span> }
+                    </div>
+                    <div class="field full">
+                      <label for="nm">Name on card</label>
+                      <input id="nm" class="input" autocomplete="cc-name" formControlName="nameOnCard" />
+                    </div>
+                    <div class="field">
+                      <label for="ex">Expiry</label>
+                      <input id="ex" class="input tnum" inputmode="numeric" autocomplete="cc-exp" formControlName="expiry" (input)="formatExpiry($event)" placeholder="MM/YY" maxlength="5" />
+                      @if (card.controls.expiry.touched && card.controls.expiry.invalid) { <span class="field-error">Use MM/YY.</span> }
+                    </div>
+                    <div class="field">
+                      <label for="cv">CVV</label>
+                      <input id="cv" class="input tnum" type="password" inputmode="numeric" autocomplete="cc-csc" formControlName="cvv" maxlength="4" placeholder="•••" />
+                      @if (card.controls.cvv.touched && card.controls.cvv.invalid) { <span class="field-error">3 or 4 digits.</span> }
+                    </div>
+                  </form>
+                </div>
+              }
+              @case ('Upi') {
+                <div class="upi">
+                  <div class="field">
+                    <label for="upi">UPI ID</label>
+                    <input id="upi" class="input" [formControl]="upi" placeholder="name@okbank" autocomplete="off" />
+                    @if (upi.touched && upi.invalid) { <span class="field-error">Enter a UPI ID like name&#64;okbank.</span> }
+                  </div>
+                  <p class="muted small">You'll get a collect request in your UPI app. Approve it to finish.</p>
+                </div>
+              }
+              @case ('NetBanking') {
+                <div class="banks">
+                  @for (bk of banks; track bk.code) {
+                    <button type="button" class="bank" [class.on]="bank() === bk.code" (click)="bank.set(bk.code); payError.set(null)">
+                      <span class="bank-mark" [style.background]="bk.color">{{ bk.code.slice(0, 2) }}</span>{{ bk.name }}
+                    </button>
+                  }
+                </div>
+              }
+            }
+          </div>
+
+          @if (payError()) {
+            <div class="banner banner-danger"><at-icon name="alert" /><p>{{ payError() }}</p></div>
+          }
+
+          <button type="button" class="btn btn-primary btn-lg btn-block" (click)="pay()" [disabled]="paying()">
+            @if (paying()) { <span class="spinner"></span> Processing payment } @else { <at-icon name="lock" />Pay {{ b.fare.total | inr }} }
+          </button>
+
+          <div class="test">
+            <button type="button" class="test-toggle" (click)="testOpen.set(!testOpen())">
+              <at-icon name="info" [size]="15" />Test payment details<at-icon name="chevron-down" [size]="14" />
+            </button>
+            @if (testOpen()) {
+              <div class="test-grid">
+                <button type="button" (click)="useTest('ok')"><b>4111 1111 1111 1111</b><small>Card, succeeds</small></button>
+                <button type="button" (click)="useTest('decline')"><b>4000 0000 0000 0002</b><small>Card, bank declines</small></button>
+                <button type="button" (click)="useTest('upi-ok')"><b>riya&#64;okaxis</b><small>UPI, succeeds</small></button>
+                <button type="button" (click)="useTest('upi-fail')"><b>fail&#64;okaxis</b><small>UPI, declined</small></button>
+              </div>
+            }
+          </div>
+        </section>
+
+        <aside class="summary card">
+          <div class="card-head"><h2 class="card-title">Your trip</h2><span class="badge badge-PendingPayment">Awaiting payment</span></div>
+          <div class="card-pad">
+            <div class="route">
+              <div><b>{{ b.segments[0].origin }}</b><small>{{ b.segments[0].originCity }}</small></div>
+              <at-icon name="plane" [size]="20" />
+              <div class="end"><b>{{ b.segments[b.segments.length - 1].destination }}</b><small>{{ b.segments[b.segments.length - 1].destinationCity }}</small></div>
+            </div>
+            <dl class="facts">
+              <div><dt>Departs</dt><dd>{{ b.segments[0].departure | date: 'EEE, d MMM' }}, {{ b.segments[0].departure | hhmm }}</dd></div>
+              <div><dt>Flights</dt><dd>@for (s of b.segments; track s.flightInstanceId; let l = $last) { {{ s.flightNumber }}@if (!l) {,} }</dd></div>
+              <div><dt>Cabin</dt><dd>{{ cabinLabels[b.cabin] }}</dd></div>
+              <div><dt>Travellers</dt><dd>@for (p of b.passengers; track $index; let l = $last) { {{ p.firstName }} {{ p.lastName }}@if (!l) {,} }</dd></div>
+            </dl>
+            <div class="perf"></div>
+            <dl class="facts">
+              <div><dt>Fare and taxes</dt><dd class="tnum">{{ b.fare.baseFare + b.fare.taxes + b.fare.convenienceFee | inr }}</dd></div>
+              @if (b.fare.extrasTotal) { <div><dt>Add-ons</dt><dd class="tnum">{{ b.fare.extrasTotal | inr }}</dd></div> }
+              @if (b.fare.discount) { <div class="disc"><dt>Discount ({{ b.couponCode }})</dt><dd class="tnum">−{{ b.fare.discount | inr }}</dd></div> }
+            </dl>
+            <div class="total"><span>Total</span><b class="tnum display">{{ b.fare.total | inr }}</b></div>
+          </div>
+        </aside>
+      </div>
+    }
+  }
+</div>

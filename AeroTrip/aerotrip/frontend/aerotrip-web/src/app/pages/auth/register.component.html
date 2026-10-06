@@ -1,0 +1,59 @@
+<div class="auth">
+  <aside class="art">
+    <h2>One account for every trip.</h2>
+    <div class="pass" aria-hidden="true">
+      <div class="l">
+        <div class="codes">
+          <div><b>DEL</b><small>New Delhi</small></div>
+          <at-icon name="plane" [size]="22" />
+          <div style="text-align:right"><b>DXB</b><small>Dubai</small></div>
+        </div>
+        <div class="meta">
+          <div><small>Flight</small><b>GS 118</b></div>
+          <div><small>Boarding</small><b>21:10</b></div>
+          <div><small>Seat</small><b>3A</b></div>
+        </div>
+      </div>
+      <div class="r"></div>
+    </div>
+    <p>Saved travellers, e-tickets, refunds and offers in one place. Free, and it takes under a minute.</p>
+  </aside>
+
+  <section class="panel">
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <h1>Create your account</h1>
+      <p>Already flying with us? <a routerLink="/login" [queryParams]="returnUrl ? { returnUrl } : {}">Log in</a></p>
+
+      <div class="field">
+        <label for="fullName">Full name</label>
+        <input id="fullName" class="input" formControlName="fullName" autocomplete="name" placeholder="As on your ID" />
+        @if (form.controls.fullName.touched && form.controls.fullName.invalid) { <span class="field-error">Enter your name.</span> }
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" class="input" type="email" formControlName="email" autocomplete="email" />
+        @if (form.controls.email.touched && form.controls.email.invalid) { <span class="field-error">Enter a valid email address.</span> }
+      </div>
+      <div class="field">
+        <label for="phone">Mobile number</label>
+        <input id="phone" class="input" inputmode="numeric" maxlength="10" formControlName="phone" autocomplete="tel-national" placeholder="10-digit number" />
+        @if (form.controls.phone.touched && form.controls.phone.invalid) { <span class="field-error">Enter a 10-digit Indian mobile number.</span> }
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input id="password" class="input" [type]="showPassword() ? 'text' : 'password'" formControlName="password" autocomplete="new-password" />
+          <button type="button" class="pw-toggle" (click)="showPassword.set(!showPassword())">{{ showPassword() ? 'Hide' : 'Show' }}</button>
+        </div>
+        @if (form.controls.password.touched && form.controls.password.invalid) { <span class="field-error">Use at least 8 characters.</span> }
+      </div>
+
+      @if (error()) { <div class="banner banner-danger err-box"><at-icon name="alert" /><p>{{ error() }}</p></div> }
+
+      <button type="submit" class="btn btn-dark btn-lg btn-block" [disabled]="busy()">
+        @if (busy()) { <span class="spinner"></span> } Create account
+      </button>
+      <p class="switch-link">Accounts are stored in memory and reset when the API restarts.</p>
+    </form>
+  </section>
+</div>

@@ -1,0 +1,96 @@
+<header class="page-head">
+  <div><h1>Offers and discounts</h1><p>Coupon codes travellers apply at checkout. Rules are enforced by the API.</p></div>
+  <button type="button" class="btn btn-primary" (click)="openCreate()"><at-icon name="plus" />New offer</button>
+</header>
+
+@if (offers() === null) {
+  <div class="grid">@for (i of [1, 2, 3]; track i) { <div class="skeleton" style="height: 230px"></div> }</div>
+} @else {
+  <div class="grid">
+    @for (o of offers(); track o.id) {
+      @let st = status(o);
+      <article class="offer" [attr.data-theme]="o.theme" [class.off]="st.label !== 'Live'">
+        <div class="o-top">
+          <div class="o-amt"><b class="display">{{ headline(o) }}</b><small>off</small></div>
+          <div class="o-head">
+            <span class="badge" [class]="'badge ' + st.cls">{{ st.label }}</span>
+            <span class="code">{{ o.code }}</span>
+          </div>
+        </div>
+        <div class="o-body">
+          <h3>{{ o.title }}</h3>
+          <p class="muted">{{ o.description }}</p>
+          <dl>
+            <div><dt>Rules</dt><dd>{{ rules(o) }}</dd></div>
+            <div><dt>Minimum spend</dt><dd>{{ o.minBookingAmount | inr }}</dd></div>
+            <div><dt>Valid</dt><dd>{{ o.validFrom | date: 'd MMM' }} to {{ o.validTo | date: 'd MMM y' }}</dd></div>
+          </dl>
+          <div class="usage">
+            <div class="u-top"><span>Redeemed</span><b class="tnum">{{ o.usedCount.toLocaleString('en-IN') }} / {{ o.usageLimit.toLocaleString('en-IN') }}</b></div>
+            <div class="u-bar"><i [style.width.%]="(o.usedCount / o.usageLimit) * 100"></i></div>
+          </div>
+        </div>
+        <footer>
+          <label class="check"><span class="switch"><input type="checkbox" [checked]="o.isActive" (change)="toggle(o)" [attr.aria-label]="'Active ' + o.code" /><span></span></span>Active</label>
+          <div class="row">
+            <button type="button" class="btn btn-ghost btn-sm" (click)="openEdit(o)"><at-icon name="edit" [size]="15" />Edit</button>
+            <button type="button" class="btn btn-ghost btn-sm del" (click)="deleting.set(o)" [attr.aria-label]="'Delete ' + o.code"><at-icon name="trash" [size]="15" /></button>
+          </div>
+        </footer>
+      </article>
+    } @empty {
+      <div class="card empty"><h3>No offers yet</h3><p>Create a code to run a sale.</p></div>
+    }
+  </div>
+}
+
+<at-drawer [open]="drawerOpen()" (closed)="drawerOpen.set(false)" [title]="editing() ? 'Edit ' + editing()!.code : 'New offer'" subtitle="Changes take effect on the next price quote.">
+  <form class="form" [formGroup]="form" (ngSubmit)="save()" id="offer-form" novalidate>
+    <div class="two">
+      <div class="field"><label for="oc">Code</label><input id="oc" class="input code-in" formControlName="code" placeholder="MONSOON12" />
+        @if (form.controls.code.touched && form.controls.code.invalid) { <span class="field-error">4–16 capital letters or digits.</span> }</div>
+      <div class="field"><label for="ot">Theme</label>
+        <div class="themes">@for (t of themes; track t) { <button type="button" class="sw" [attr.data-theme]="t" [class.on]="form.controls.theme.value === t" (click)="form.controls.theme.setValue(t)" [attr.aria-label]="t"></button> }</div></div>
+    </div>
+    <div class="field"><label for="oti">Title</label><input id="oti" class="input" formControlName="title" placeholder="12% off monsoon getaways" /></div>
+    <div class="field"><label for="od">Description</label><textarea id="od" class="input" rows="2" formControlName="description"></textarea></div>
+
+    <h3>Discount</h3>
+    <div class="three">
+      <div class="field"><label for="ty">Type</label>
+        <select id="ty" class="select" formControlName="discountType"><option value="Percentage">Percentage</option><option value="Flat">Flat amount</option></select></div>
+      <div class="field"><label for="ov">{{ form.controls.discountType.value === 'Flat' ? 'Amount (₹)' : 'Percent' }}</label><input id="ov" class="input" type="number" formControlName="value" /></div>
+      @if (form.controls.discountType.value === 'Percentage') {
+        <div class="field"><label for="om">Max discount (₹)</label><input id="om" class="input" type="number" formControlName="maxDiscount" /></div>
+      }
+    </div>
+
+    <h3>Eligibility</h3>
+    <div class="two">
+      <div class="field"><label for="omin">Minimum booking (₹)</label><input id="omin" class="input" type="number" formControlName="minBookingAmount" /></div>
+      <div class="field"><label for="ou">Usage limit</label><input id="ou" class="input" type="number" formControlName="usageLimit" /></div>
+      <div class="field"><label for="ocab">Cabin</label>
+        <select id="ocab" class="select" formControlName="cabin"><option value="">Any cabin</option>@for (c of cabins; track c) { <option [value]="c">{{ cabinLabels[c] }}</option> }</select></div>
+      <div class="field"><label for="oa">Airline</label>
+        <select id="oa" class="select" formControlName="airlineCode"><option value="">Any airline</option>@for (a of airlines(); track a.code) { <option [value]="a.code">{{ a.name }}</option> }</select></div>
+      <div class="field"><label for="of">Starts</label><input id="of" class="input" type="date" formControlName="validFrom" /></div>
+      <div class="field"><label for="oto">Ends</label><input id="oto" class="input" type="date" formControlName="validTo" /></div>
+    </div>
+    <label class="check"><span class="switch"><input type="checkbox" formControlName="internationalOnly" /><span></span></span>International flights only</label>
+    <label class="check"><span class="switch"><input type="checkbox" formControlName="isActive" /><span></span></span>Active</label>
+    @if (formError()) { <div class="banner banner-danger form-error"><at-icon name="alert" /><p>{{ formError() }}</p></div> }
+  </form>
+  <ng-container drawer-actions>
+    <button type="button" class="btn" (click)="drawerOpen.set(false)">Cancel</button>
+    <button type="submit" form="offer-form" class="btn btn-dark" [disabled]="saving()">@if (saving()) { <span class="spinner"></span> } {{ editing() ? 'Save changes' : 'Create offer' }}</button>
+  </ng-container>
+</at-drawer>
+
+<at-modal [open]="!!deleting()" (closed)="deleting.set(null)">
+  <h2 class="m-title">Delete {{ deleting()?.code }}?</h2>
+  <p class="muted m-text">Travellers won't be able to use this code any more. Bookings that already used it keep their discount. To stop it temporarily, pause it instead.</p>
+  <div class="m-actions">
+    <button type="button" class="btn" (click)="deleting.set(null)">Keep offer</button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete offer</button>
+  </div>
+</at-modal>
