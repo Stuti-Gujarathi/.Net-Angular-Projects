@@ -35,7 +35,7 @@ import { Mood } from './core/mood';
           Escorted holidays from India with an Indian Tour Manager on every departure.
           Prices are indicative, per person on twin sharing; GST and TCS extra.
         </p>
-        <p class="footer-note">Concept build for the SG Travels UI/UX assignment.</p>
+        <p class="footer-note">Concept build for the SG Travels || Stuti Gujarathi - @codewithstuti</p>
       </div>
     </footer>
   `,
