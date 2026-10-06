@@ -179,12 +179,3 @@ Errors use RFC 9457 problem details; validation errors are keyed by the camelCas
 The code uses no .NET 10-only APIs, so it builds and runs the same on .NET 8.
 
 ---
-
-## Assignment deliverables checklist
-
-| Deliverable | Where |
-|---|---|
-| Desktop UI, 4+ screens | Home, Discover, Journey detail, Reserve (plus confirmation and 404) |
-| Mobile UI, 3+ screens | All screens are responsive; open them at phone width |
-| Interactive prototype | This running app (drag the shade, move the dials, hover the passes, reserve a seat) |
-| One-page concept note | `CONCEPT_NOTE.md` |
